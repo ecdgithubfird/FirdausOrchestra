@@ -146,7 +146,7 @@
                 @endforeach 
             @else
                 <div class="col-12 text-center">
-                    <p>No events for this month.</p>
+                    <p>Stay tuned! We're planning more inspiring performances for you. Check back soon for updates!</p>
                 </div>
             @endif
         </div>

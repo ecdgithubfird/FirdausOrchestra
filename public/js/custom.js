@@ -443,7 +443,7 @@ function getEventsByMonth(selectedMonth){
         else {
             // If no events, display a message
             $('#eventsContainer').html('<div class="col-12 text-center mt-4">' +
-                        '<h3>No events for this month.</h3>' +
+                        "<h3>Stay tuned! We're planning more inspiring performances for you. Check back soon for updates!</h3>" +
                         '</div>');
         }   
     }

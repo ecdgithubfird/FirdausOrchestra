@@ -66,7 +66,7 @@
         </div>
     </div>
     <div class="text-center per-col4">
-        <a href="/events"><button class="btn performance-btn">View Calendar</button></a>
+        <!--- <a href="/events"><button class="btn performance-btn">View Calendar</button></a> --->
     </div>    
 </section>
 
@@ -146,7 +146,7 @@
 <!--- News ---->
 <section class="news">
     <div class="container">
-        <h1 class="fir-sub-hd mb-3">NEWS<span class="float-end more-news">MORE NEWS <img src="img/newsarrow.png"></span></h1>   
+        <h1 class="fir-sub-hd mb-3">MEDIA CENTER<span class="float-end more-news">MORE NEWS <img src="img/newsarrow.png"></span></h1>   
         <div class="row">            
             @foreach ($news as $key => $item)              
                 
@@ -198,7 +198,7 @@
                                         </div>
                                         <div class="">
                                             <a style="text-decoration: none; color: #212529;" href="{{$item->url}}" >
-                                                <h2 class="testi-nam">{{$item->name}}</h2>
+                                                <h2 class="testi-nam">{{$item->name."(". $item->designation. ")"}}</h2>
                                             </a>                                          
                                             @php
                                                 $dateTime = new DateTime($item->testimonial_date);

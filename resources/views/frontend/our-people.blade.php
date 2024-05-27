@@ -9,7 +9,7 @@
         <ul class="breadcrumb">
           <li><a href="/">Home</a>/</li>
           <li><a href="/about-us">About Us</a>/</li>
-          <li><a href="/our-people" class="active"><b>Our People</b></a></li>
+          <li><a href="/our-people" class="active"><b>Our Team</b></a></li>
         </ul>
       </div>
     </div>

@@ -321,7 +321,7 @@
         
         <div class="mm-centered">
           <h1 class="mm-up-per-content">{{ strtoupper($topContent['EventName']) }}</h1>
-          <a href="/events"><button class="btn mm-cal-btn">View Calender</button></a>
+          <!--- <a href="/events"><button class="btn mm-cal-btn">View Calender</button></a> --->
         </div>
       @endif
       </div>

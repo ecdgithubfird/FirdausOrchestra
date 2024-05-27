@@ -46,13 +46,13 @@
         </div>
       </div>
       <!---<marquee behavior="slide" direction="left">-->
-        <div class="row mt-footer">
+        {{--<div class="row mt-footer">
           @foreach($social_icons as $icons)
             <div class="col d-flex justify-content-center mt-2">
               <img src="{{ $icons->featured_image}}" class="h-8">
             </div>
           @endforeach        
-        </div>
+        </div>--}}
       <!---</marquee> --->
       <hr>
       <div class="row copyright-footer" style="padding-bottom:1rem;">
@@ -63,7 +63,7 @@
         <div class="col-md-5 d-flex footer-icon-pos align-items-center justify-content-center" style="padding-right:3%;">
           <ul class="list-inline footer-ul-margin" >
             @foreach($connect_menus as $menu)
-              <li class="list-inline-item footer-li-margin"><a href="{{$menu->url}}"  class="no-style-link"><img src="{{ $menu->featured_image }}" class="footer-icons"></a></li>
+              <li class="list-inline-item footer-li-margin"><a href="{{$menu->url}}"  class="no-style-link" target="_blank"><img src="{{ $menu->featured_image }}" class="footer-icons" ></a></li>
             @endforeach            
           </ul>
         </div>

@@ -45,7 +45,7 @@
                 </div>
             </div>
         </section>
-
+        {{---
         <div class="container">
             <div class="row">
             
@@ -84,7 +84,7 @@
                     </div>
             </div>
         </div>
-        
+        ---}}
         <section class="orchestra">
             <div class="container">
                 @foreach($aboutTemplate as $item)
