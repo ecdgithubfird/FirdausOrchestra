@@ -187,7 +187,7 @@
                         @foreach($testimonials as $key=> $item)
                         <div class="carousel-item @if($key == 0) active @endif">
                             <div class="row testimonial_bx">
-                                <div class="col-md-8 col-sm-12">
+                                <div class="@if($item->featured_image !=null)col-md-8 @else col-md-10 @endif col-sm-12">
                                     <div class="testi-content">
                                         @php
                                             $description = strip_tags($item->description);
@@ -208,9 +208,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12 p-0">
+                               <div class="col-md-4 col-sm-12 p-0">
+                                @if($item->featured_image !=null)
                                     <img src="{{$item->featured_image}}" class="img-fluid w-100 h-80 testi-img">
-                                </div>
+                                @endif
+                                </div>                                
                             </div>
                         </div>     
                         @endforeach                
