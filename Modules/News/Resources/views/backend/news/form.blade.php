@@ -101,19 +101,15 @@
     <div class="col-12 col-sm-4 mb-3">
     <div class="form-group">
             <?php
-            $field_name = 'category_id';
+            $field_name = 'category_name';
             $field_lable = 'Category Name';
             $field_relation = "category";
-            $field_placeholder = __("Select an option");
-            $categories = DB::table('categories')->where('group_name','News')->get();
-            $select_options = [];
-            $required = "required";
-            foreach ($categories as $i) {
-                $select_options[$i->id] = $i->name;
-            }
+            $field_placeholder = $field_lable;
+            $required = "";
             ?>
-            {{ html()->label($field_lable, $field_name) }} {!! fielf_required($required) !!}
-            {{ html()->select($field_name, $select_options)->placeholder($field_placeholder)->class('form-control select2')->attributes(["$required"]) }}
+            {{ html()->label($field_lable, $field_name)->class('form-label') }} {!! fielf_required($required) !!}
+            {{ html()->text($field_name)->placeholder($field_placeholder)->class('form-control')->attributes(["$required"]) }}
+                     
         </div>
     </div>
 </div>
