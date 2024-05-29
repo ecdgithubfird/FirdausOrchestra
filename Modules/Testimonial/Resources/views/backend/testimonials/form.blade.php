@@ -99,7 +99,7 @@
             $field_name = 'featured_image';
             $field_lable = label_case($field_name);;
             $field_placeholder = $field_lable;
-            $required = "required";
+            $required = "";
             ?>
             {{ html()->label($field_lable, $field_name) }} {!! fielf_required($required) !!}
             <div class="input-group mb-3">
