@@ -1,0 +1,76 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  phpVersion: 8.3
+
+steps:
+# Install PHP and required extensions
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y php$(phpVersion) php$(phpVersion)-fpm php$(phpVersion)-mysql php$(phpVersion)-mbstring php$(phpVersion)-xml php$(phpVersion)-curl
+    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+    sudo update-alternatives --set php-cgi /usr/bin/php$(phpVersion)
+    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+    sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+    sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+    php -version
+  displayName: 'Install PHP and required extensions'
+
+# Cache Composer dependencies
+- task: Cache@2
+  inputs:
+    key: 'composer | "$(Agent.OS)" | composer.lock'
+    path: '~/.composer/cache'
+  displayName: 'Cache Composer dependencies'
+
+# Install Composer dependencies
+- script: composer install --no-interaction --prefer-dist
+  displayName: 'Install Composer dependencies'
+
+# Setup environment
+- script: |
+    php artisan key:generate
+  displayName: 'Setup environment'
+
+# Run database migrations
+- script: php artisan migrate --force
+  displayName: 'Run database migrations'
+
+# Run PHPUnit tests
+- script: vendor/bin/phpunit
+  displayName: 'Run PHPUnit tests'
+
+# Deploy application using SSH service connection
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**'
+    targetFolder: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+    cleanTargetFolder: true
+  displayName: 'Deploy application'
+
+# Restart Nginx and PHP-FPM services
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
+    runOptions: 'commands'
+    commands: |
+      sudo systemctl restart nginx
+      sudo systemctl restart php8.3-fpm
+  displayName: 'Restart Services'
+
+# Post-deployment steps to clear and optimize cache
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
+    runOptions: 'commands'
+    commands: |
+      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
+      php artisan cache:clear
+      php artisan optimize
+  displayName: 'Post-Deployment Steps'
