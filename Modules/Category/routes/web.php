@@ -60,5 +60,6 @@ Route::group(['namespace' => '\Modules\Category\Http\Controllers\Backend', 'as' 
     Route::get("$module_name/trashed", ['as' => "$module_name.trashed", 'uses' => "$controller_name@trashed"]);
     Route::patch("$module_name/trashed/{id}", ['as' => "$module_name.restore", 'uses' => "$controller_name@restore"]);
     Route::delete("$module_name/emptyTrash", ['as' => "$module_name.emptyTrash", 'uses' => "$controller_name@emptyTrash"]);
+    Route::post("$module_name/category_order", ['as' => "$module_name.catCount", 'uses' => "$controller_name@catCount"]);
     Route::resource("$module_name", "$controller_name");
 });

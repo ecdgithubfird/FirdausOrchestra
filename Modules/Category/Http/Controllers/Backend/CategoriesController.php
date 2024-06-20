@@ -6,6 +6,7 @@ use App\Authorizable;
 use App\Http\Controllers\Backend\BackendBaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Modules\Category\Models\Category;
 
 class CategoriesController extends BackendBaseController
 {
@@ -147,4 +148,14 @@ class CategoriesController extends BackendBaseController
 
         return redirect()->route("backend.$module_name.show", $$module_name_singular->id);
     }
+    public function catCount(Request $request)
+    {
+        $groupName = $request->input('groupName');
+        
+        $catCount = Category::where('group_name', $groupName)->count();;
+       
+        return response()->json($catCount);
+    
+
+    }    
 }

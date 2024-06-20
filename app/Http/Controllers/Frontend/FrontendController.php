@@ -102,8 +102,11 @@ class FrontendController extends Controller
                         ->orderBy('designation')
                         ->get();    
                 
-        $category =  Category::where('group_name',"Musician-Instruments")->where('status','Active')->get(); 
-        $category1 =  Category::where('group_name',"Musician-Instruments")->where('status','Active')->first();        
+        $category =  Category::where('group_name',"Musician-Instruments")
+                    ->where('status','Active')->orderBy('category_order')->get(); 
+        $category1 =  Category::where('group_name',"Musician-Instruments")
+                    ->where('status','Active')
+                    ->orderBy('category_order')->first();        
              
         $events =  Post::where('category_name',"MusicianEvent")->get();
         $subcategory1 = [];

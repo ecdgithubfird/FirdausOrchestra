@@ -38,7 +38,7 @@
 </div>
 <div class="row mb-3">
     <div class="col-12 col-sm-4">    
-    <div class="form-group">
+        <div class="form-group">
             <?php
             $field_name = 'parent_category';
             $field_lable = label_case($field_name);
@@ -52,7 +52,17 @@
             {{ html()->label($field_lable, $field_name)->class('form-label') }} {!! fielf_required($required) !!}
             {{ html()->select($field_name, $select_options)->placeholder($field_placeholder)->class('form-select')->attributes(["$required"]) }}
         </div>
-    </div>   
+    </div> 
+    <div class="col-12 col-sm-4">    
+        <?php
+            $field_name = 'category_order';
+            $field_lable = label_case($field_name);
+            $field_placeholder = "-- Select an option --";  
+            $required = "";
+        ?>
+        {{ html()->label($field_lable, $field_name)->class('form-label') }} {!! fielf_required($required) !!}
+        {{ html()->select($field_name)->id('category_order')->placeholder($field_placeholder)->class('form-control select2')->attributes(["$required"]) }}
+    </div>  
 </div>
 <div class="row mb-3">
     <div class="col-8">
@@ -238,6 +248,11 @@
 
 <script type="module">
     $(document).ready(function() {
+        var groupName = $("#group_name").val();
+        if(groupName){
+            setCategoryOrder(groupName,1);       
+         }
+        
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
             document.querySelector('.select2-container--open .select2-search__field').focus();
@@ -286,6 +301,46 @@
                 cache: true
             }
         });
+        $('#group_name').on('change', function () {  
+            var catName = $("#group_name").val(); 
+            setCategoryOrder(catName,0);
+            
+        });
+
+        function setCategoryOrder(groupName,actionValue){            
+            $.ajax({
+                url: '{{ route("backend.categories.catCount") }}',
+                method: 'POST',
+                data: { groupName: groupName, _token: '{{ csrf_token() }}' },
+                success: function(response) {   
+                    console.log(response);                            
+                    updateCatOrderValues(response,actionValue);
+                },
+                error: function(error) {
+                    console.error('Error fetching menu order:', error);
+                    if (error.responseText) {
+                        console.log('Response text:', error.responseText);
+                    }
+                }
+            });
+        }
+        function updateCatOrderValues(catOrder,actionValue) {
+                var $catDropdown = $('#category_order');     
+                if (actionValue == 1){
+                    var catOrder = catOrder;
+                }
+                else{
+                    var catOrder = catOrder + 1;
+                }           
+                $catDropdown.empty();
+                $catDropdown.append('<option value="">' + '{{ __("Select an option") }}' + '</option>');
+
+                // Append options ranging from 1 to menuOrder + 1
+                for (var i = 1; i <= catOrder; i++) {
+                    $catDropdown.append('<option value="' + i + '">' + i + '</option>');
+                }
+            }
+
     });
 </script>
 @endpush
