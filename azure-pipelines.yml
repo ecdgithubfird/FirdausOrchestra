@@ -31,6 +31,16 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'Install Composer dependencies'
 
+# Verify .env file exists
+- script: |
+    if [ -f $(Build.SourcesDirectory)/.env ]; then
+      echo ".env file exists."
+    else
+      echo "ERROR: .env file does not exist."
+      exit 1
+    fi
+  displayName: 'Verify .env file exists'
+
 # Setup environment
 - script: |
     php artisan key:generate
