@@ -34,13 +34,13 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'Install Composer dependencies'
 
-# Skip environment setup if not required
-# - script: |
-#     php artisan key:generate
-#   displayName: 'Setup environment'
-
 # Run PHPUnit tests
-- script: vendor/bin/phpunit
+- script: |
+    if [ -f tests/bootstrap.php ]; then
+      vendor/bin/phpunit --bootstrap tests/bootstrap.php
+    else
+      vendor/bin/phpunit
+    fi
   displayName: 'Run PHPUnit tests'
 
 # Deploy application using SSH service connection
@@ -61,8 +61,7 @@ steps:
     commands: |
       cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
       php artisan migrate --force
-      php artisan key:generate
-  displayName: 'Run migrations and setup on server'
+  displayName: 'Run migrations on server'
 
 # Restart Nginx and PHP-FPM services
 - task: SSH@0
@@ -82,5 +81,7 @@ steps:
     commands: |
       cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
       php artisan cache:clear
-      php artisan optimize
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
   displayName: 'Post-Deployment Steps'
