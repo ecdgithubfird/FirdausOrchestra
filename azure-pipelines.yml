@@ -8,17 +8,20 @@ variables:
   phpVersion: 8.3
 
 steps:
-# Install PHP and required extensions
 - script: |
     sudo apt-get update
-    sudo apt-get install -y php$(phpVersion) php$(phpVersion)-fpm php$(phpVersion)-mysql php$(phpVersion)-mbstring php$(phpVersion)-xml php$(phpVersion)-curl
-    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
-    sudo update-alternatives --set php-cgi /usr/bin/php$(phpVersion)
-    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
-    sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
-    sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+    sudo apt-get install -y php${phpVersion} php${phpVersion}-fpm php${phpVersion}-mysql php${phpVersion}-mbstring php${phpVersion}-xml php${phpVersion}-curl
+    sudo update-alternatives --set php /usr/bin/php${phpVersion}
+    sudo update-alternatives --set php-cgi /usr/bin/php${phpVersion}
+    sudo update-alternatives --set phar /usr/bin/phar${phpVersion}
+    sudo update-alternatives --set phpdbg /usr/bin/phpdbg${phpVersion}
+    sudo update-alternatives --set phar.phar /usr/bin/phar.phar${phpVersion}
     php -version
   displayName: 'Install PHP and required extensions'
+
+# Checkout the repository
+- checkout: self
+  displayName: 'Checkout repository'
 
 # Cache Composer dependencies
 - task: Cache@2
@@ -31,24 +34,10 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'Install Composer dependencies'
 
-# Verify .env file exists
-- script: |
-    if [ -f $(Build.SourcesDirectory)/.env ]; then
-      echo ".env file exists."
-    else
-      echo "ERROR: .env file does not exist."
-      exit 1
-    fi
-  displayName: 'Verify .env file exists'
-
-# Setup environment
-- script: |
-    php artisan key:generate
-  displayName: 'Setup environment'
-
-# Run database migrations
-- script: php artisan migrate --force
-  displayName: 'Run database migrations'
+# Skip environment setup if not required
+# - script: |
+#     php artisan key:generate
+#   displayName: 'Setup environment'
 
 # Run PHPUnit tests
 - script: vendor/bin/phpunit
@@ -64,6 +53,17 @@ steps:
     cleanTargetFolder: true
   displayName: 'Deploy application'
 
+# SSH commands to run database migrations and setup on the server
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
+    runOptions: 'commands'
+    commands: |
+      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
+      php artisan migrate --force
+      php artisan key:generate
+  displayName: 'Run migrations and setup on server'
+
 # Restart Nginx and PHP-FPM services
 - task: SSH@0
   inputs:
@@ -71,7 +71,7 @@ steps:
     runOptions: 'commands'
     commands: |
       sudo systemctl restart nginx
-      sudo systemctl restart php8.3-fpm
+      sudo systemctl restart php${phpVersion}-fpm
   displayName: 'Restart Services'
 
 # Post-deployment steps to clear and optimize cache
