@@ -35,12 +35,7 @@ steps:
   displayName: 'Install Composer dependencies'
 
 # Run PHPUnit tests
-- script: |
-    if [ -f tests/bootstrap.php ]; then
-      vendor/bin/phpunit --bootstrap tests/bootstrap.php
-    else
-      vendor/bin/phpunit
-    fi
+- script: vendor/bin/phpunit
   displayName: 'Run PHPUnit tests'
 
 # Deploy application using SSH service connection
