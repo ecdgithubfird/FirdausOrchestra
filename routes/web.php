@@ -52,6 +52,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Frontend', 'as' => 'frontend.
     Route::get('our-conductor', 'FrontendController@ourConductor')->name('our-conductor');
     Route::get('events', 'FrontendController@events')->name('events');
     Route::get('coming-soon', 'FrontendController@comingSoon')->name('coming-soon');
+    Route::get('what-we-do', 'FrontendController@whatWeDo')->name('what-we-do');
     /* Save subscribers */
     Route::post('save-subscribe', 'FrontendController@saveSubscribers')->name('save-subscribers');
 

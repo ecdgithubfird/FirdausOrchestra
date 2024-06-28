@@ -2598,3 +2598,393 @@ transform: rotate(180deg) !important;
     }
     
 }   
+/*what to do*/
+.www-overlay {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    color: #f1f1f1;
+    bottom: 0px;
+    top: 330px;
+    padding: 10px 15px;
+    width: 100%;
+    border-radius: 0px 0px 15px 15px;
+    margin-right: 11px;
+
+}
+
+.www-img {
+    border-radius: 15px;
+    width: -webkit-fill-available;
+    height: 450px;
+}
+
+.www-img-hd {
+    font-family: 'JosefinSans-bold';
+    font-size: 16px;
+    top: 15%;
+    position: absolute;
+}
+
+.www-img-sub-hd {
+    color: #fff;
+    font-family: 'poppins';
+    font-size: 12px;
+    top: 38%;
+    position: absolute;
+}
+
+.first-www {
+    margin-top: 160px;
+}
+
+.sec-www {
+    margin-top: 80px;
+}
+
+
+
+.www-music-ip {
+    background: url(../img/wwwbg1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 8% 0 5% 0;
+}
+
+.music-ip-hd {
+    font-family: 'cinzel-bold';
+    text-transform: capitalize;
+    color: #000;
+    text-align: center;
+    animation: fade-left 1s ease-in;
+    margin: 5% 0 1% 0;
+}
+
+.music-ip-c h4 {
+    font-family: 'cinzel-semibold';
+    color: #B68D40;
+    font-size: 25px;
+    text-align: center;
+    text-transform: capitalize;
+    margin-bottom: 20px;
+}
+
+.music-ip-c h6 {
+    font-family: 'poppins';
+    color: #000;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 5.5rem;
+}
+
+.music-ip-c {
+    margin-top: 20px;
+}
+
+.music-ip-img {
+    max-width: 250px;
+    max-height: 250px;
+    margin-top: 3.5rem;
+}
+
+.www-edu-prgrms {
+    margin: -10% 0 0 0;
+}
+
+.www-centered {
+    position: absolute;
+    top: 34%;
+    text-align: center;
+}
+
+.www-down-content {
+    font-family: 'poppins';
+    color: #fff;
+    text-align: center;
+    font-size: 19px;
+    padding: 0 17%;
+    margin-bottom: 50px;
+    line-height: 30px;
+}
+
+.www-up-content {
+    font-family: 'cinzel-bold';
+    color: #FFF;
+    margin-bottom: 45px;
+}
+
+.www-btm-btn {
+    border: 1px solid #fff;
+    color: #fff;
+    text-align: center;
+    font-family: 'poppins';
+    border-radius: 10px;
+    padding: 14px 37px;
+    font-size: 18px;
+    background-color: transparent;
+}
+
+.www-btm-btn:active,
+.www-btm-btn:hover,
+.www-btm-btn:focus,
+.www-btm-btn:visited {
+    border: 1px solid #fff;
+    color: #fff;
+    text-align: center;
+    font-family: 'poppins';
+    border-radius: 10px;
+    padding: 14px 37px;
+    font-size: 18px;
+    background-color: transparent;
+}
+.www-btn-bold{
+    font-family: 'poppins-semibold';
+    margin-right: 5px;
+}
+@media only screen and (max-width: 768px) {
+    .first-www,
+       .sec-www,
+       .third-www {
+           margin-top: 15px;
+       }
+       .music-ip-c h6 {
+        margin-bottom: .5rem;
+    }
+   }
+   @media only screen and (max-width:1200px) {
+    .www-down-content {
+        font-family: 'poppins';
+        color: #fff;
+        text-align: center;
+        font-size: 17px;
+        padding: 0 2%;
+        margin-bottom: 20px;
+        line-height: 30px;
+    }
+    .www-up-content {
+        font-family: 'cinzel-bold';
+        color: #FFF;
+        margin-bottom: 15px;
+    }
+   }
+   @media only screen and (max-width:900px) {
+    .www-down-content {
+        font-family: 'poppins';
+        color: #fff;
+        text-align: center;
+        font-size: 15px;
+        padding: 0 2%;
+        margin-bottom: 10px;
+        line-height: 20px;
+    }
+    .www-up-content {
+        font-family: 'cinzel-bold';
+        color: #FFF;
+        margin-bottom: 10px;
+    }
+    .www-btm-btn {
+        padding: 8px 25px;
+        font-size: 15px;
+    }
+    .www-centered {
+        position: absolute;
+        top: 24%;
+        text-align: center;
+    }
+   }
+   @media only screen and (max-width:615px) {
+    .www-bg-img{
+        height: 400px;
+    }
+   }
+   @media only screen and (max-width:400px) {
+    .www-bg-img{
+        height: 510px;
+    }
+   }
+
+   /*what to do end*/
+
+   /*career page*/
+.career-page {
+    padding: 1% 0 2% 0;
+}
+.career-page p {
+    font-family: 'poppins';
+    color: #000;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 0rem;
+}
+.career-page h4 {
+    /*font-family: 'cinzel-semibold';*/
+    color: #B68D40;
+    font-size: 30px;
+    text-align: center;
+    /*text-transform: capitalize;*/
+    margin: 30px 0;
+}
+.h-400{
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.h-200{
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.pt-12{
+    padding-top: 12px;
+}
+@media only screen and (max-width: 992px) {
+    .h-400{
+        height: 300px;
+    }
+    .h-200{
+        height: 150px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .career-page h4 {
+        font-size: 18px;
+    }
+    .career-page p {
+        font-size: 15px;
+    }
+    .career-gallery .col-xs-12{
+        padding-top: 12px;
+    }
+    .pt-12{
+        padding-top: 0px;
+    }
+    .career-gallery .pe-0{
+        padding-right: 12px !important;
+    }
+    .h-400{
+        height: 150px;
+    }
+    .h-200{
+        height: 150px;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .h-400{
+        height: 100px;
+    }
+    .h-200{
+        height: 100px;
+    }
+    .career-page h4 {
+        font-size: 18px;
+        line-break: anywhere;
+    }
+}
+/*career page end*/
+/*contact-us-page*/
+.contact-us-page {
+    padding: 1% 0 2% 0;
+}
+
+.contact-page-img {
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px 0px #00000080;
+}
+
+.contact-hd {
+    font-family: 'cinzel-bold';
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: fade-left 1s ease-in;
+    margin-bottom: 6%;
+}
+
+.contact-rgt-side {
+    padding-left: 8%;
+}
+
+.contact-rgt-side h5 {
+    font-family: 'cinzel-bold';
+    color: #000;
+    font-size: 35px;
+}
+
+.contact-rgt-side p {
+    font-family: 'poppins';
+    color: #000;
+    font-size: 20px;
+    width: 70%;
+}
+
+.contact-rgt-side h6 {
+    font-family: 'poppins';
+    color: #000;
+    font-size: 18px;
+    padding-top: 2%;
+    padding-left: 15px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .contact-rgt-side p {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .contact-rgt-side {
+        padding-left: 3%;
+    }
+}
+
+.contact-footer-icons {
+    height: 20px;
+}
+
+.contact-li {
+    margin-right: 7px !important;
+}
+
+.contact-ul-margin {
+    background-color: #d3ecf0;
+    padding: 4px 12px 6px 19px;
+    border-radius: 25px;
+    width: fit-content;
+}
+
+.contact-form .input-group-text {
+    background-color: transparent;
+    border-right: none;
+}
+
+.contact-form .form-control {
+    border-left: none;
+    outline: none;
+    padding-left: 0px;
+    font-family: 'poppins';
+    font-size: 14px;
+}
+
+.contact-form .form-label {
+    margin-bottom: .2rem;
+    font-family: 'poppins-semibold';
+    color: #000;
+    font-size: 14px;
+}
+.contact-textarea .form-control {
+    border-left:1px solid #dee2e6;
+    padding-left: 1rem;
+}
+.c-icon-h {
+    height: 14px;
+}
+.textarea-contact{
+    font-family: 'poppins';
+    font-size: 14px;
+    color: #868688;
+}
+.mt-sub-btn{
+    margin-top: 10%;
+}
+/*contact-us-page end*/

@@ -325,13 +325,14 @@ class FrontendController extends Controller
      */
     public function ourPeople()
     {
+        $slug = 'our-people';
         $section1 = DB::table('pages')
                     ->join('page_fields', 'pages.id', '=', 'page_fields.page_id')
                     ->join('fields', 'page_fields.field_id', '=', 'fields.id')
                     ->join('templates', 'pages.template_id', '=', 'templates.id')
                     ->select('fields.name as key', 'page_fields.field_value as value')
                     ->where('fields.name', 'like', 'Section1%')
-                    ->where('templates.slug', '=', 'our-people')
+                    ->where('templates.slug', '=', $slug)
                     ->get()
                     ->map(function ($item) {
                         return (array)$item;
@@ -349,16 +350,7 @@ class FrontendController extends Controller
                     ->orderBy('designation')
                     ->get();   
 
-        $section3Title =  DB::table('pages')
-                        ->join('page_fields', 'pages.id', '=', 'page_fields.page_id')
-                        ->join('fields', 'page_fields.field_id', '=', 'fields.id')
-                        ->join('templates', 'pages.template_id', '=', 'templates.id')
-                        ->select('fields.name as key', 'page_fields.field_value as value')
-                        ->where('fields.name', '=', 'Section3 Title')
-                        ->where('templates.slug', '=', 'our-people')
-                        ->first(); 
-
-        $section3TitleValue = $section3Title ? $section3Title->value : null;        
+        $section3TitleValue = $this->getAContent('Section3 Title','our-people');   
 
         $section3 = Musician::where('designation_category', 'LIKE', '%second violin%')
                     ->orderByRaw("CASE 
@@ -368,48 +360,18 @@ class FrontendController extends Controller
                                     END, designation") // Add a secondary ordering by designation to ensure consistent results
                     ->limit(4)
                     ->get();
-
-        $section4TitleValue = Page::join('page_fields', 'pages.id', '=', 'page_fields.page_id')
-                            ->join('fields', 'page_fields.field_id', '=', 'fields.id')
-                            ->join('templates', 'pages.template_id', '=', 'templates.id')
-                            ->select('fields.name as key', 'page_fields.field_value as value')
-                            ->where('fields.name', '=', 'Section4 Title')
-                            ->where('templates.slug', '=', 'our-people')
-                            ->first();
-        $section4Title = $section4TitleValue ? $section4TitleValue->value : null;
-
-        $section4 = Page::join('page_fields', 'pages.id', '=', 'page_fields.page_id')
-                        ->join('fields', 'page_fields.field_id', '=', 'fields.id')
-                        ->join('templates', 'pages.template_id', '=', 'templates.id')
-                        ->select('fields.name as field_name', 'page_fields.field_value as field_value')
-                        ->where('fields.name', 'like', 'Section4%')
-                        ->where('templates.slug', '=', 'our-people')
-                        ->get();
-
-        $section5TitleValue = Page::join('page_fields', 'pages.id', '=', 'page_fields.page_id')
-                        ->join('fields', 'page_fields.field_id', '=', 'fields.id')
-                        ->join('templates', 'pages.template_id', '=', 'templates.id')
-                        ->select('fields.name as key', 'page_fields.field_value as value')
-                        ->where('fields.name', '=', 'Section5 Title')
-                        ->where('templates.slug', '=', 'our-people')
-                        ->first();    
         
-        $section5Title = $section5TitleValue ? $section5TitleValue->value : null;
-    
-        $section5 = Page::join('page_fields', 'pages.id', '=', 'page_fields.page_id')
-                    ->join('fields', 'page_fields.field_id', '=', 'fields.id')
-                    ->join('templates', 'pages.template_id', '=', 'templates.id')
-                    ->select('fields.name as field_name', 'page_fields.field_value as field_value')
-                    ->where('fields.name', 'like', 'Section5%')
-                    ->where('templates.slug', '=', 'our-people')
-                    ->get();
+        $section4Title = $this->getAContent('Section4 Title','our-people');
+        $section4 = $this->getDataByContent('Section4',$slug);        
+        $section5Title = $this->getAContent('Section5 Title',$slug);    
+        $section5 = $this->getDataByContent('Section5',$slug);
         
         $section7 = DB::table('pages')->join('page_fields', 'pages.id', '=', 'page_fields.page_id')
                     ->join('fields', 'page_fields.field_id', '=', 'fields.id')
                     ->join('templates', 'pages.template_id', '=', 'templates.id')
                     ->select('fields.name as key', 'page_fields.field_value as value')
                     ->where('fields.name', 'like', 'Section7%')
-                    ->where('templates.slug', '=', 'our-people')
+                    ->where('templates.slug', '=', $slug)
                     ->get()
                     ->map(function ($item) {
                         return (array)$item;
@@ -439,10 +401,15 @@ class FrontendController extends Controller
      */
     public function careers()
     {
-        $itemData = Menu::select('name','description','featured_image')
-        ->where([['slug', '=', 'careers'],['group_name', '=','Footer']])
-        ->first();
-        return view('frontend.careers')->with('itemData',$itemData);
+        $slug = 'careers';
+        $careerTitle = $this->getAContent('Career Title',$slug);
+        $careerText = $this->getAContent('Career Content',$slug);
+        $imageData = $this->getDataByContent('Career Image',$slug); 
+        $images = $imageData->pluck('field_value');
+        $emailText = $this->getAContent('Career Email Text',$slug); 
+        $emailText2 = $this->getAContent('Career Email Text2',$slug); 
+        $email = $this->getAContent('Career Email',$slug); 
+        return view('frontend.careers',compact('careerText','careerTitle','images','emailText','emailText2','email'));
     }
 
     /**
@@ -555,10 +522,12 @@ class FrontendController extends Controller
      */
     public function contactUs()
     {
-        $itemData = Menu::select('name','description','featured_image')
-        ->where([['slug', '=', 'contact-us'],['group_name', '=','SubMenu']])
-        ->first();
-        return view('frontend.project')->with('itemData',$itemData);
+        $slug = 'contact-us';
+        $connect_menus = Menu::where('group_name','Connect')->where('status',1)->whereNull('deleted_at')->get(); 
+        $title = $this->getAContent('Section1 Title',$slug);
+        $subtitle = $this->getAContent('Section1 SubTitle',$slug);
+        $image = $this->getAContent('Section1 Image',$slug);
+        return view('frontend.contact-us',compact('connect_menus','title','subtitle','image'));
     }
     /**
      * Save subscribers mail id.
@@ -649,5 +618,45 @@ class FrontendController extends Controller
     {
         
       return view('frontend.errors') ;
+    }
+
+    public function whatWeDo(){
+
+        $slug = 'what-we-do';
+        $section1 = $this->getDataByContent('Section1',$slug);  
+        $section2 = $this->getDataByContent('Section2',$slug);                    
+        $section2Title = $this->getAContent('Section2 Title',$slug);
+        $section2Description = $this->getAContent('Section2 Description',$slug);
+        $section3Title = $this->getAContent('Section3 Title',$slug);
+        $section3Description = $this->getAContent('Section3 Content',$slug);
+        $section3Image = $this->getAContent('Section3 Image',$slug);        
+                   
+        return view('frontend.what-we-do',compact('section1','section2','section2Title','section3Title',
+        'section2Description','section3Description','section3Image')) ;
+    }
+
+    public function getAContent($fieldName,$templateSlug)
+    {
+        $textValue = Page::join('page_fields', 'pages.id', '=', 'page_fields.page_id')
+                            ->join('fields', 'page_fields.field_id', '=', 'fields.id')
+                            ->join('templates', 'pages.template_id', '=', 'templates.id')
+                            ->select('fields.name as key', 'page_fields.field_value as value')
+                            ->where('fields.name', '=', $fieldName)
+                            ->where('templates.slug', '=', $templateSlug)
+                            ->first();
+
+        $textContent = $textValue ? $textValue->value : null;
+        return $textContent;
+    }
+    public function getDataByContent($fieldText,$templateSlug){
+
+        $data = Page::join('page_fields', 'pages.id', '=', 'page_fields.page_id')
+                    ->join('fields', 'page_fields.field_id', '=', 'fields.id')
+                    ->join('templates', 'pages.template_id', '=', 'templates.id')
+                    ->select('fields.name as field_name', 'page_fields.field_value as field_value')
+                    ->where('fields.name', 'like', $fieldText.'%')
+                    ->where('templates.slug', '=', $templateSlug)
+                    ->get();    
+        return $data;
     }
 }
