@@ -249,8 +249,14 @@
 <script type="module">
     $(document).ready(function() {
         var groupName = $("#group_name").val();
+        var parentCategory = $("#parent_category").val();
+        
         if(groupName){
-            setCategoryOrder(groupName,1);       
+            if(groupName == "Sub-Instruments"){                
+                setCategoryOrder(groupName,parentCategory,1); 
+            } else{
+                setCategoryOrder(groupName,null,1);  
+            }
          }
         
         $(document).on('select2:open', () => {
@@ -302,16 +308,21 @@
             }
         });
         $('#group_name').on('change', function () {  
-            var catName = $("#group_name").val(); 
-            setCategoryOrder(catName,0);
+            var catName = $("#group_name").val();
+            setCategoryOrder(catName,null,0);
+            $('#parent_category').on('change', function (){
+                var parentCat = $("#parent_category").val();
+                setCategoryOrder(catName,parentCat,0);
+            });
+            
             
         });
 
-        function setCategoryOrder(groupName,actionValue){            
+        function setCategoryOrder(groupName,parentCategory,actionValue){                       
             $.ajax({
                 url: '{{ route("backend.categories.catCount") }}',
                 method: 'POST',
-                data: { groupName: groupName, _token: '{{ csrf_token() }}' },
+                data: { groupName: groupName, parent: parentCategory, _token: '{{ csrf_token() }}' },
                 success: function(response) {   
                     console.log(response);                            
                     updateCatOrderValues(response,actionValue);

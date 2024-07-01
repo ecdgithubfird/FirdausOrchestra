@@ -63,6 +63,8 @@ Route::group(['namespace' => '\Modules\Musician\Http\Controllers\Backend', 'as' 
     //Route::post("$module_name/getSubCategories",['as' => "$module_name.getSubCategories", 'uses' => "$controller_name@getSubCategories"]);
     
     Route::post("$module_name/getSubCategories",['as' => "$module_name.sub_category", 'uses' => "$controller_name@getSubCategories"] );
+    Route::post("$module_name/musicianCount",['as' => "$module_name.musician_count", 'uses' => "$controller_name@MusicianCount"] );
+    Route::post("$module_name/getOrder",['as' => "$module_name.musician_order", 'uses' => "$controller_name@MusicianOrder"] );
     Route::post("$module_name/getSubCategory",['as' => "$module_name.selected_sub_category", 'uses' => "$controller_name@getSubCategory"] );
     Route::delete("$module_name/emptyTrash", ['as' => "$module_name.emptyTrash", 'uses' => "$controller_name@emptyTrash"]);
     Route::delete("$module_name/deleteData/{id}", ['as' => "$module_name.deleteData", 'uses' => "$controller_name@deleteData"]);

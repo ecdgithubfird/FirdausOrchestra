@@ -146,6 +146,28 @@
             {{ html()->text($field_name)->placeholder($field_placeholder)->class('form-control')->attributes(["$required"]) }}
         </div>
     </div>
+    <div class="col-4 mb-3">
+        <div class="form-group">
+            <?php
+            $field_name = 'musician_order';
+            $field_lable = label_case($field_name);
+            $field_placeholder = "-- Select an option --";            
+            $required = "";
+            $orders = DB::table('musicians')->where('id',$data['id'])->get();
+            $order = [];
+            $required = "required";
+            $selectedOrder = null; 
+            foreach ($orders as $i) {
+                $order[$i->musician_order] = $i->musician_order;
+                if ($i->id == $data['id']) {
+                    $selectedOrder = $i->musician_order; // Set the selected order value
+                }
+            }
+            ?>
+            {{ html()->label($field_lable, $field_name)->class('form-label') }} {!! fielf_required($required) !!}
+            {{ html()->select($field_name,$order,$selectedOrder)->id('musician_order')->placeholder($field_placeholder)->class('form-control select2')->attributes(["$required"]) }}
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -294,10 +316,22 @@
        // var initialSubCategories = {!! json_encode($subs) !!};
         
         var musicianValue = $('#musician_name').val();
-        var musicianId= $('#musician_id').val();
+        var musicianId= $('#musician_id').val();       
         var categoryId= $('#instrument_category').val();       
+        
+        if(categoryId){
+            setMusicianOrder(categoryId, 1);
+            var selOption = $(this).find('option:selected');
+            
+            var selText = selOption.text().trim();      
+            selText = extractCleanText(selText);   
+            toggleSubCategoryRequirement(selText);
+            setMusicianOrderValue(musicianId);
+        }
         if(musicianValue !=""){
             getSubCategories(categoryId,null);
+            //toggleSubCategoryRequirement(categoryId);
+            //setMusicianOrder(categoryId,1); 
         }
         updateSubCategories([]);
         var existingBaseUrl = "/";
@@ -306,6 +340,12 @@
             var selectedOption = $(this).find('option:selected');
             var selectedText = selectedOption.text();
             getSubCategories(selectedCategoryId, selectedText);
+            toggleSubCategoryRequirement(selectedText);
+            if (window.location.href.indexOf("edit") > -1) {
+                setMusicianOrder(selectedCategoryId, 1);
+            } else {
+                setMusicianOrder(selectedCategoryId, 0);
+            }          
             
         });
 
@@ -340,7 +380,7 @@
                         method: 'POST',
                         data: { musician_id: musicianId, _token: '{{ csrf_token() }}'},
                         success: function(response) {   
-                            console.log(response[0].sub_category);   
+                            //sconsole.log(response[0].sub_category);   
                             var selectedSubCategory = response[0].sub_category;
                             $.each(subCategories, function(index, subCategory) {
                                 $subCategoryDropdown.append('<option value="' + subCategory.id + '">' + subCategory.name + '</option>');                
@@ -360,6 +400,22 @@
             
                 }
             }
+            function extractCleanText(text) {
+                // Extract "Section Leaders" from the text
+                var cleanText = text.match(/Section Leaders/);
+                return cleanText ? cleanText[0] : text;
+            }
+        function toggleSubCategoryRequirement(selText) {            
+            if (selText.includes("Section Leaders")){               
+                $('#sub_category').prop('required', false);
+            } else {
+                $('#sub_category').prop('required', true);
+            }
+        }
+
+    // Initial check to set sub-category requirement based on initial category value
+    /*var initialCategoryText = $('#instrument_category option:selected').text();
+    toggleSubCategoryRequirement(initialCategoryText);*/
 
         $('#sub_category').change(function() {
             var subOption = $(this).find('option:selected');
@@ -402,6 +458,64 @@
             var newUrl = currentUrl + '/' + encodeURIComponent(subCategorySlug);
             $('#musician_url').val(newUrl);
         }
+        function setMusicianOrder(Id,actionValue){    
+              
+            $.ajax({
+                url: '{{ route("backend.musicians.musician_count") }}',
+                method: 'POST',
+                data: { category: Id, _token: '{{ csrf_token() }}' },
+                success: function(response) {   
+                    //console.log(response);                            
+                    updateMusicianOrderValues(response,actionValue);
+                },
+                error: function(error) {
+                    //console.error('Error fetching menu order:', error);
+                    if (error.responseText) {
+                        console.log('Response text:', error.responseText);
+                    }
+                }
+            });
+        }
+        function updateMusicianOrderValues(catOrder,actionValue) {
+                var $catDropdown = $('#musician_order');     
+                if (actionValue == 1){
+                    var catOrder = catOrder;
+                }
+                else{
+                    var catOrder = catOrder + 1;
+                }           
+                $catDropdown.empty();
+                $catDropdown.append('<option value="">' + '{{ __("Select an option") }}' + '</option>');
+
+                // Append options ranging from 1 to menuOrder + 1
+                for (var i = 1; i <= catOrder; i++) {
+                    $catDropdown.append('<option value="' + i + '">' + i + '</option>');
+                }
+            }
+            function setMusicianOrderValue(musicianId) {
+                var $orderCategoryDropdown = $('#musician_order');            
+                $orderCategoryDropdown.empty();            
+                $orderCategoryDropdown.append('<option value="">' + '{{ __("Select an option") }}' + '</option>');  
+                $.ajax({
+                    url: '{{route("backend.musicians.musician_order")}}', 
+                    method: 'POST',
+                    data: { musician_id: musicianId, _token: '{{ csrf_token() }}' },
+                    success: function(response) {
+                        var order = response[0].musician_order;
+                        if (response) {
+  
+                            $('#musician_order').val(order).trigger('change');
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error fetching musician order value:', error);
+                    }
+                });
+            }
+            $('#musician_order').change(function() {
+        var selectedOrder = $(this).val();
+        console.log('Musician order value selected:', selectedOrder);
+    });
 
         
     });

@@ -151,8 +151,12 @@ class CategoriesController extends BackendBaseController
     public function catCount(Request $request)
     {
         $groupName = $request->input('groupName');
-        
-        $catCount = Category::where('group_name', $groupName)->count();;
+        $parent = $request->input('parent');
+        if($parent == null){
+            $catCount = Category::where('group_name', $groupName)->count();
+        }else{
+            $catCount = Category::where('group_name', $groupName)->where('parent_category',$parent)->count();
+        }
        
         return response()->json($catCount);
     

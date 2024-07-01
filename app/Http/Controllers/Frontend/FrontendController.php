@@ -92,16 +92,28 @@ class FrontendController extends Controller
                                   END")
                         ->orderBy('designation')
                         ->get();   */
-        $topMusicians = Musician::whereIn('designation', ['Conductor', 'Concert Master and String Section Leader', 'Rhythm And Percussion Section Leader'])
+        /*$topMusicians = Musician::whereIn('designation', ['Conductor', 'Concert Master and String Section Leader', 'Rhythm/Arabic/Indian Section Leader'])
                         ->orderByRaw("CASE 
                                         WHEN LOWER(designation) = 'conductor' THEN 1
                                         WHEN LOWER(designation) = 'concert master and string section leader' THEN 2
-                                        WHEN LOWER(designation) LIKE '%rhythm%' OR LOWER(designation) LIKE '%percussion%' THEN 3
+                                        WHEN LOWER(designation) LIKE '%rhythm%'   THEN 3
                                         ELSE 4
                                     END")
                         ->orderBy('designation')
-                        ->get();    
-                
+                        ->get(); */
+
+        $topMusicians = Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
+                        ->select('musicians.name','musicians.designation','musicians.file')
+                        ->where('categories.name', '=', 'Section Leaders')
+                        ->where('musicians.musician_order', '>=', 2)
+                        ->orderBy('musicians.musician_order', 'asc')
+                        ->get();
+        $sectionLeaders = Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
+                        ->select('musicians.name','musicians.designation','musicians.file','musicians.id')
+                        ->where('categories.name', '=', 'Section Leaders')                        
+                        ->orderBy('musicians.musician_order', 'asc')
+                        ->get();
+               
         $category =  Category::where('group_name',"Musician-Instruments")
                     ->where('status','Active')->orderBy('category_order')->get(); 
         $category1 =  Category::where('group_name',"Musician-Instruments")
@@ -210,7 +222,7 @@ class FrontendController extends Controller
 
         } 
           
-        return view('frontend.musicians')
+        return view('frontend.musicians',compact('sectionLeaders'))
         ->with('topContent',$top_content)
         ->with('category',$category)        
         ->with('musicians',$musicians)        

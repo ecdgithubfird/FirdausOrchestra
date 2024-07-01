@@ -67,6 +67,7 @@
                 @endforeach
             </ul>
             <!-- Tab panes -->
+             
             <div class="tab-content meetmusicians1">
                 @foreach($category as $cat)
                     <div id="{{ strtolower(str_replace(' ', '', $cat->name)) }}"
@@ -74,24 +75,25 @@
                         <br>
                         @if($loop->first)
                             <ul class="nav nav-pills d-flex justify-content-center mt-4" role="tablist">
-                                @foreach($subcategory1 as $st)
+                                {{--@foreach($sectionLeaders as $st)
                                     <li class="nav-item">
                                         <a class="nav-link @if($loop->first) active @endif" data-bs-toggle="pill"
                                             href="#{{strtolower(str_replace(' ', '_', $st->name))}}">{{$st->name}}</a>
                                     </li>
-                                @endforeach
+                                @endforeach--}}
                             </ul>
                             <hr class="vio-hr">
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                @foreach($subcategory1 as $st)
+                                {{--@foreach($subcategory1 as $st)
                                     <div id="{{ strtolower(str_replace(' ', '_', $st->name)) }}"
                                         class="container tab-pane @if($loop->first) active @else fade @endif mb-4"><br>
-                                        @if($loop->first)                                            
-                                            <div class="row musician-scroll">
-                                                @foreach($musicians[$st->name]->where('designation_category', 'First Violin') as $item)
+                                        @if($loop->first)--}}                                            
+                                            <div class="row">
+                                            
+                                                {{-- @foreach($musicians[$st->name]->where('designation_category', 'First Violin') as $item)--}}
                                                     
-                                                        
+                                                     @foreach($sectionLeaders as $item)   
                                                             <div class="col-md-3 col-sm-6 mt-4 openModalButton" id="openModalButton" data-id = "{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">
                                                                 <div class="vio-musi-img mx-auto d-block hoverflash column">
                                                                    <figure> <img src="{{ $item->file }}" class="img-fluid"></figure>
@@ -105,7 +107,7 @@
                                                     
                                                 @endforeach
                                                 <hr class="vio-hr-1">
-                                                @foreach($musicians[$st->name]->where('designation_category', 'Second Violin') as $item)                                               
+                                               {{-- @foreach($musicians[$st->name]->where('designation_category', 'Second Violin') as $item)                                               
                                                     
                                                         <div class="col-md-3 col-sm-6 mt-4 openModalButton" id="openModalButton" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">
                                                             <div class="vio-musi-img mx-auto d-block hoverflash column">
@@ -119,9 +121,9 @@
                                                
                                                 
                                             @endforeach
-                                            <hr class="vio-hr-1">
+                                            <hr class="vio-hr-1">--}}
                                             </div>
-                                        @else  
+                                        {{--@else  
                                         
                                             <div class="row @if(count($musicians[$st->name])>4) musician-scroll @endif" >                                        
                                                 @foreach($musicians[$st->name] as $item)
@@ -142,9 +144,9 @@
                                             
                                             <hr class="vio-hr-1">
                                             </div>
-                                        @endif
+                                        @endif 
                                     </div>
-                                @endforeach
+                                @endforeach--}}
                             </div>
                           
                            @elseif($loop->iteration == 2)
