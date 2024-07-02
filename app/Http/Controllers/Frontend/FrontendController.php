@@ -172,12 +172,13 @@ class FrontendController extends Controller
                     ->where('categories.parent_category', $category[1]->id)
                     ->where('categories.name', $subCategory2->name)                    
                     ->where('musicians.status',1)
-                    ->orderByRaw("CASE 
+                    ->orderBy('musicians.musician_order')
+                    /*->orderByRaw("CASE 
                                         WHEN LOWER(designation) LIKE '%concertmaster%' THEN 1
                                         WHEN LOWER(designation) LIKE '%principal%' THEN 2                                        
                                         WHEN LOWER(designation) LIKE '%tutti%' THEN 3
                                         ELSE 5
-                                    END, designation")    
+                                    END, designation")    */
                     ->get();   
                 $musiciansForSubCategory2= $musiciansForSubCategory2->reject(function ($musician) use ($topMusicians) {
                         return $topMusicians->pluck('name')->contains($musician->name);
