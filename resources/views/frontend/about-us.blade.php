@@ -24,6 +24,7 @@
         <section class="get-to-know">
             <div class="container">
                 <div class="row">
+                    
                 @foreach($aboutTemplate as $item)
                     <div class="col-md-8 col-sm-12">
                     @if ($item->field_name === 'Heading')
@@ -45,7 +46,7 @@
                 </div>
             </div>
         </section>
-        {{---
+        
         <div class="container">
             <div class="row">
             
@@ -54,13 +55,11 @@
                             <h1 class="type-writing-hd">{{ strip_tags($item->field_value) }}</h1>
                         @elseif ($item->field_name === 'Description')
                         <div class="css-typing" data-text="{{ strip_tags($item->field_value) }}"></div>                        
-                        
-
-                        @elseif ($item->field_name === 'Section 2 Heading')
-                        <h3 class="type-writing-hd" id="journeySection">{{ $item->field_value }}</h3>
+                        {{--@elseif ($item->field_name === 'Section 2 Heading')
+                        <h3 class="type-writing-hd" id="journeySection">{{ $item->field_value }}</h3>--}}
                         @endif
                     @endforeach 
-                     
+                    {{---
                     <div class="timeline">
                         @foreach($aboutJourney->sortBy(function ($item) {
                             // Extract the year from field_value
@@ -81,10 +80,10 @@
                             </div>
                         </div>
                         @endforeach
-                    </div>
+                    </div>---}}
             </div>
         </div>
-        ---}}
+        
         <section class="orchestra">
             <div class="container">
                 @foreach($aboutTemplate as $item)
