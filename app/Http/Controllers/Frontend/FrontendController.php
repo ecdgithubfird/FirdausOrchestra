@@ -113,7 +113,12 @@ class FrontendController extends Controller
                         ->where('categories.name', '=', 'Section Leaders')                        
                         ->orderBy('musicians.musician_order', 'asc')
                         ->get();
-               
+        $topMusician = Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
+                        ->select('musicians.name','musicians.designation','musicians.file')
+                        ->where('categories.name', '=', 'Section Leaders')
+                        ->where('musicians.musician_order', '=', 1)                        
+                        ->get();   
+
         $category =  Category::where('group_name',"Musician-Instruments")
                     ->where('status','Active')->orderBy('category_order')->get(); 
         $category1 =  Category::where('group_name',"Musician-Instruments")
@@ -222,7 +227,7 @@ class FrontendController extends Controller
 
         } 
           
-        return view('frontend.musicians',compact('sectionLeaders'))
+        return view('frontend.musicians',compact('sectionLeaders','topMusician'))
         ->with('topContent',$top_content)
         ->with('category',$category)        
         ->with('musicians',$musicians)        

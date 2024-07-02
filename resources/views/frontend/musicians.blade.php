@@ -39,7 +39,19 @@
     <div class="container">
         <div class="row">
                 <h1 class="meet-musicians-hd">Our Musicians</h1>
-                
+                <div class="row mt-5 d-flex justify-content-center">
+                    <div class="col-sm-4">
+                        @foreach($topMusician as $musician)
+                        <div class="artist-img hovertop column">
+                            <figure> <img src="{{$musician->file}}" width="80%"></figure>
+                        </div>
+                        <div class="artist-details">
+                            <h4>{{$musician->name}}</h4>
+                            <h5>{{$musician->designation}}</h5>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
                     <div class="row">
                         @foreach($topMusicians as $index => $item)
                         <div class="col-sm-4 artist-item  openModalButton @if($index == 1) sec-artist @elseif($index == 2) third-artist @endif" data-index="{{ $index }}" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" >
