@@ -103,7 +103,7 @@ class FrontendController extends Controller
                         ->get(); */
 
         $topMusicians = Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
-                        ->select('musicians.name','musicians.designation','musicians.file')
+                        ->select('musicians.name','musicians.designation','musicians.file','musicians.id')
                         ->where('categories.name', '=', 'Section Leaders')
                         ->where('musicians.musician_order', '>=', 2)
                         ->orderBy('musicians.musician_order', 'asc')
@@ -114,13 +114,14 @@ class FrontendController extends Controller
                         ->orderBy('musicians.musician_order', 'asc')
                         ->get();
         $topMusician = Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
-                        ->select('musicians.name','musicians.designation','musicians.file')
+                        ->select('musicians.name','musicians.designation','musicians.file','musicians.id')
                         ->where('categories.name', '=', 'Section Leaders')
                         ->where('musicians.musician_order', '=', 1)                        
                         ->get();   
 
         $category =  Category::where('group_name',"Musician-Instruments")
                     ->where('status','Active')->orderBy('category_order')->get(); 
+                    
         $category1 =  Category::where('group_name',"Musician-Instruments")
                     ->where('status','Active')
                     ->orderBy('category_order')->first();        

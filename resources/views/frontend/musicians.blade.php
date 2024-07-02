@@ -40,7 +40,7 @@
         <div class="row">
                 <h1 class="meet-musicians-hd">Our Musicians</h1>
                 <div class="row mt-5 d-flex justify-content-center">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 openModalButton" data-index="{{ $index }}" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         @foreach($topMusician as $musician)
                         <div class="artist-img hovertop column">
                             <figure> <img src="{{$musician->file}}" width="80%"></figure>
