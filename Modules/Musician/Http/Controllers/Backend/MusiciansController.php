@@ -41,27 +41,6 @@ class MusiciansController extends BackendBaseController
         $this->module_model = "Modules\Musician\Models\Musician";
     }
 
-    public function edit($id)
-    {
-        $module_title = $this->module_title;
-        $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
-        $module_model = $this->module_model;
-        $module_name_singular = Str::singular($module_name);
-
-        $module_action = 'Edit';
-
-        $$module_name_singular = $module_model::findOrFail($id);
-
-        logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
-        
-        return view(
-            "$module_path.$module_name.edit",
-            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', "$module_name_singular",'h')
-        );
-    }
-
     public function getSubCategories(Request $request)
     {
         $categoryId = $request->input('category_id');
