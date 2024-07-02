@@ -138,7 +138,7 @@
         <div class="form-group">
             <?php
             $field_name = 'designation_category';
-            $field_lable = label_case($field_name);
+            $field_lable = "Designation Category";
             $field_placeholder = $field_lable;
             $required = "";
             ?>
@@ -146,6 +146,7 @@
             {{ html()->text($field_name)->placeholder($field_placeholder)->class('form-control')->attributes(["$required"]) }}
         </div>
     </div>
+    
     <div class="col-4 mb-3">
         <div class="form-group">
             <?php
@@ -153,13 +154,15 @@
             $field_lable = label_case($field_name);
             $field_placeholder = "-- Select an option --";            
             $required = "";
-            $orders = DB::table('musicians')->where('id',$data['id'])->get();
-            $order = [];            
+            $order = [];  
             $selectedOrder = null; 
-            foreach ($orders as $i) {
-                $order[$i->musician_order] = $i->musician_order;
-                if ($i->id == $data['id']) {
-                    $selectedOrder = $i->musician_order; // Set the selected order value
+            if($data){
+                $orders = DB::table('musicians')->where('id',$data['id'])->get();
+                foreach ($orders as $i) {
+                    $order[$i->musician_order] = $i->musician_order;
+                    if ($i->id == $data['id']) {
+                        $selectedOrder = $i->musician_order; // Set the selected order value
+                    }
                 }
             }
             ?>
@@ -311,6 +314,7 @@
     });
 </script>
 <script>
+    /*
     $(document).ready(function() {        
        // var initialSubCategories = {!! json_encode($subs) !!};
         
@@ -412,9 +416,7 @@
             }
         }
 
-    // Initial check to set sub-category requirement based on initial category value
-    /*var initialCategoryText = $('#instrument_category option:selected').text();
-    toggleSubCategoryRequirement(initialCategoryText);*/
+    
 
         $('#sub_category').change(function() {
             var subOption = $(this).find('option:selected');
@@ -517,7 +519,7 @@
     });
 
         
-    });
+    });*/
 </script>
 
 @endpush    
