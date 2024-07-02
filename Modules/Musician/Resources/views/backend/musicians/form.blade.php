@@ -154,8 +154,7 @@
             $field_placeholder = "-- Select an option --";            
             $required = "";
             $orders = DB::table('musicians')->where('id',$data['id'])->get();
-            $order = [];
-            $required = "required";
+            $order = [];            
             $selectedOrder = null; 
             foreach ($orders as $i) {
                 $order[$i->musician_order] = $i->musician_order;
