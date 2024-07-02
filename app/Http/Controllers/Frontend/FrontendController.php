@@ -72,7 +72,7 @@ class FrontendController extends Controller
     public function musicians()
     {
         // $top_content =  Post::where('category_name',"Musicians")->get();
-        $top_content = Page::select('fields.name as field_name', 'page_fields.field_value as field_value')
+        $topContent = Page::select('fields.name as field_name', 'page_fields.field_value as field_value')
                         ->join('page_fields', 'pages.id', '=', 'page_fields.page_id')
                         ->join('fields', 'page_fields.field_id', '=', 'fields.id')
                         ->join('templates','pages.template_id','=','templates.id')
@@ -214,16 +214,9 @@ class FrontendController extends Controller
 
         } 
           
-        return view('frontend.musicians',compact('sectionLeaders','topMusician','top_content','category','musicians'))       
-        ->with('events',$events)
-        ->with('subcategory1',$subcategory1)
-        ->with('subcategory2',$subcategory2)
-        ->with('musicians2',$musicians2)
-        ->with('subcategory3',$subcategory3)
-        ->with('musicians3',$musicians3)
-        ->with('subcategory4',$subcategory4)
-        ->with('musicians4',$musicians4)
-        ->with('topMusicians',$topMusicians);
+        return view('frontend.musicians',compact('sectionLeaders','topMusician','topContent',
+        'category','musicians','events','topMusicians','subcategory1','subcategory2','subcategory3',
+        'subcategory4','musicians2','musicians3','musicians4'));      
     }
 
     

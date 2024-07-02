@@ -260,13 +260,10 @@
                             <div class="tab-content  ">
                                 @foreach($subcategory4 as $st)
                                     <div id="{{ strtolower(str_replace(' ', '_', $st->name)) }}"
-                                        class="container tab-pane @if($loop->first) active @else fade @endif mb-4"><br>
-                                        @if($loop->first)
-                                            
-                                            <div class="row @if(count($musicians4[$st->name])>4) musician-scroll @endif">
-                                                @foreach($musicians4[$st->name]->chunk(6) as $chunk)
+                                        class="container tab-pane @if($loop->first) active @else fade @endif mb-4"><br>                                       
+                                            <div class="row @if(count($musicians4[$st->name])>4) musician-scroll @endif">                                                
                                                     <div class="row">
-                                                        @foreach($chunk as $item)
+                                                        @foreach($musicians4[$st->name] as $item)
                                                             <div class="col-md-3 col-sm-6 mt-4 openModalButton" data-id = "{{$item->id}}">
                                                                 <div class="vio-musi-img mx-auto d-block hoverflash column">
                                                                    <figure> <img src="{{ $item->file }}" class="img-fluid"></figure>
@@ -277,27 +274,8 @@
                                                             </div>
                                                         @endforeach
                                                     </div>
-                                                    <hr class="vio-hr-1">
-                                                @endforeach
-                                            </div>
-                                        @else 
-                                            
-                                            @foreach($musicians4[$st->name] ->chunk(6) as $chunk)
-                                              <div class="row @if(count($musicians4[$st->name])>4) musician-scroll @endif"">                                                        
-                                                @foreach($chunk as $item)
-                                                  <div class="col-md-3 col-sm-6 mt-4 openModalButton" data-id = "{{$item->id}}">
-                                                      <div class="vio-musi-img mx-auto d-block hoverflash column">
-                                                          <figure><img src="{{ $item->file }}" class="img-fluid"></figure>
-                                                      </div>
-                                                      <div class="musi-name">{{ $item->name }}</div>
-                                                      <div class="musi-name2">{{ $item->designation }}</div>
-                                                      <div class="musi-name3">{{ $item->designation_category }}</div>
-                                                  </div>
-                                                @endforeach
-                                              </div>
-                                              <hr class="vio-hr-1">
-                                            @endforeach
-                                        @endif
+                                                    <hr class="vio-hr-1">                                                
+                                            </div>                                        
                                     </div>
                                 @endforeach
                             </div>
