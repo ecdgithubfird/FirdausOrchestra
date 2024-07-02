@@ -214,7 +214,7 @@ class FrontendController extends Controller
 
         } 
           
-        return view('frontend.musicians',compact('sectionLeaders','topMusician','topContent','category','musicians'))       
+        return view('frontend.musicians',compact('sectionLeaders','topMusician','top_content','category','musicians'))       
         ->with('events',$events)
         ->with('subcategory1',$subcategory1)
         ->with('subcategory2',$subcategory2)
