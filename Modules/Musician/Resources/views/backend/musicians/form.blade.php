@@ -314,7 +314,7 @@
     });
 </script>
 <script>
-    /*
+    
     $(document).ready(function() {        
        // var initialSubCategories = {!! json_encode($subs) !!};
         
@@ -519,7 +519,7 @@
     });
 
         
-    });*/
+    });
 </script>
 
 @endpush    
