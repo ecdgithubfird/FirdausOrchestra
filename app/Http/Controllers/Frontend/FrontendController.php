@@ -180,9 +180,9 @@ class FrontendController extends Controller
                                         ELSE 5
                                     END, designation")    */
                     ->get();   
-                $musiciansForSubCategory2= $musiciansForSubCategory2->reject(function ($musician) use ($topMusicians) {
+                /*$musiciansForSubCategory2= $musiciansForSubCategory2->reject(function ($musician) use ($topMusicians) {
                         return $topMusicians->pluck('name')->contains($musician->name);
-                    });      
+                    });  */    
                 $musicians2[$subCategory2->name] = $musiciansForSubCategory2;              
             }
             foreach ($subcategory3 as $index=>$subCategory3) {
