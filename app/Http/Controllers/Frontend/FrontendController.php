@@ -132,10 +132,10 @@ class FrontendController extends Controller
         $subcategory3 = [];
         $subcategory4 = [];
         if ($category) {
-            $subcategory1 = Category::where('parent_category', $category1->id)->get();  
-            $subcategory2 = Category::where('parent_category', $category[1]->id)->get();  
-            $subcategory3 = Category::where('parent_category', $category[2]->id)->get();
-            $subcategory4 = Category::where('parent_category', $category[3]->id)->get();     
+            $subcategory1 = Category::where('parent_category', $category1->id)->orderBy('category_order')->get();  
+            $subcategory2 = Category::where('parent_category', $category[1]->id)->orderBy('category_order')->get();  
+            $subcategory3 = Category::where('parent_category', $category[2]->id)->orderBy('category_order')->get();
+            $subcategory4 = Category::where('parent_category', $category[3]->id)->orderBy('category_order')->get();     
             $musicians = [];  
             $musicians2 = [];    
             $musicians3 = [];    
