@@ -192,16 +192,11 @@ class FrontendController extends Controller
                     ->where('categories.parent_category', $category[2]->id)                    
                     ->where('categories.name', $subCategory3->name)
                     ->where('musicians.status',1)
-                    ->orderByRaw("CASE 
-                                        WHEN LOWER(designation) LIKE '%concertmaster%' THEN 1
-                                        WHEN LOWER(designation) LIKE '%principal%' THEN 2                                        
-                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 3
-                                        ELSE 5
-                                    END, designation")    
+                    ->orderBy('musicians.musician_order')  
                     ->get(); 
-                    $musiciansForSubCategory3= $musiciansForSubCategory3->reject(function ($musician) use ($topMusicians) {
+                    /*$musiciansForSubCategory3= $musiciansForSubCategory3->reject(function ($musician) use ($topMusicians) {
                         return $topMusicians->pluck('name')->contains($musician->name);
-                    });       
+                    });      */ 
                 $musicians3[$subCategory3->name] = $musiciansForSubCategory3;              
             }
             foreach ($subcategory4 as $index=>$subCategory4) {
@@ -211,25 +206,15 @@ class FrontendController extends Controller
                     ->where('categories.parent_category', $category[3]->id)
                     ->where('categories.name', $subCategory4->name)                    
                     ->where('musicians.status',1)
-                    ->orderByRaw("CASE 
-                                        WHEN LOWER(designation) LIKE '%concertmaster%' THEN 1
-                                        WHEN LOWER(designation) LIKE '%principal%' THEN 2                                        
-                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 3
-                                        ELSE 5
-                                    END, designation")    
-                    ->get();    
-                    $musiciansForSubCategory4= $musiciansForSubCategory4->reject(function ($musician) use ($topMusicians) {
-                        return $topMusicians->pluck('name')->contains($musician->name);
-                    });     
+                    ->orderBy('musicians.musician_order')   
+                    ->get();   
+                    
                 $musicians4[$subCategory4->name] = $musiciansForSubCategory4;              
             }   
 
         } 
           
-        return view('frontend.musicians',compact('sectionLeaders','topMusician'))
-        ->with('topContent',$top_content)
-        ->with('category',$category)        
-        ->with('musicians',$musicians)        
+        return view('frontend.musicians',compact('sectionLeaders','topMusician','topContent','category','musicians'))       
         ->with('events',$events)
         ->with('subcategory1',$subcategory1)
         ->with('subcategory2',$subcategory2)
