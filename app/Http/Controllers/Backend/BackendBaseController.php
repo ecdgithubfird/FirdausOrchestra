@@ -247,7 +247,7 @@ class BackendBaseController extends Controller
         
         return view(
             "$module_path.$module_name.edit",
-            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', "$module_name_singular",'h')
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', "$module_name_singular")
         );
     }
 
