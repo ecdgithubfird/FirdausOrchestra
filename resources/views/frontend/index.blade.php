@@ -131,7 +131,7 @@
                     @endforeach      
                 </div>
             </div>            
-            <div class="col-md-5 col-sm-6 d-flex justify-content-end">
+            <div class="col-md-5 col-sm-6 d-flex justify-content-center">
                 <div class="abt-img-width">
                     <div class="about-rgt-img img-shadow" id="abtImage" style="background-image: url('{{ $image[1] }}'); ">
                         {{--<img id="abtImage" src="{{$image[1]}}" class="h-100 img-fluid img-shadow">--}}                    

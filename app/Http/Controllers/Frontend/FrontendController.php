@@ -333,25 +333,16 @@ class FrontendController extends Controller
                         })
                     ->toArray(); 
         
-        $section2 =  Musician::whereIn('designation', ['Conductor', 'Concert Master and String Section Leader',
-                     'Rhythm And Percussion Section Leader'])
-                    ->orderByRaw("CASE 
-                                    WHEN LOWER(designation) = 'conductor' THEN 1
-                                    WHEN LOWER(designation) = 'concert master and string section leader' THEN 2
-                                    WHEN LOWER(designation) LIKE '%rhythm%' OR LOWER(designation) LIKE '%percussion%' THEN 3
-                                    ELSE 4
-                                END")
-                    ->orderBy('designation')
-                    ->get();   
+        $section2 =  Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
+                    ->select('musicians.name','musicians.designation','musicians.file','musicians.id')
+                    ->where('categories.name', '=', 'Section Leaders')
+                    ->where('musicians.musician_order', '>=', 2)
+                    ->orderBy('musicians.musician_order', 'asc')
+                    ->get(); 
 
         $section3TitleValue = $this->getAContent('Section3 Title','our-people');   
 
-        $section3 = Musician::where('designation_category', 'LIKE', '%second violin%')
-                    ->orderByRaw("CASE 
-                                        WHEN LOWER(designation) LIKE '%principal1%' THEN 1
-                                        WHEN LOWER(designation) LIKE '%principal2%' THEN 2
-                                        ELSE 3
-                                    END, designation") // Add a secondary ordering by designation to ensure consistent results
+        $section3 = Musician::where('designation', '=', 'Principal')
                     ->limit(4)
                     ->get();
         
