@@ -121,7 +121,7 @@ class FrontendController extends Controller
 
         $category =  Category::where('group_name',"Musician-Instruments")
                     ->where('status','Active')->orderBy('category_order')->get(); 
-                    
+
         $category1 =  Category::where('group_name',"Musician-Instruments")
                     ->where('status','Active')
                     ->orderBy('category_order')->first();        
@@ -174,9 +174,8 @@ class FrontendController extends Controller
                     ->where('musicians.status',1)
                     ->orderByRaw("CASE 
                                         WHEN LOWER(designation) LIKE '%concertmaster%' THEN 1
-                                        WHEN LOWER(designation) LIKE '%principal 1%' THEN 2
-                                        WHEN LOWER(designation) LIKE '%principal 2%' THEN 3
-                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 4
+                                        WHEN LOWER(designation) LIKE '%principal%' THEN 2                                        
+                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 3
                                         ELSE 5
                                     END, designation")    
                     ->get();   
@@ -194,9 +193,8 @@ class FrontendController extends Controller
                     ->where('musicians.status',1)
                     ->orderByRaw("CASE 
                                         WHEN LOWER(designation) LIKE '%concertmaster%' THEN 1
-                                        WHEN LOWER(designation) LIKE '%principal 1%' THEN 2
-                                        WHEN LOWER(designation) LIKE '%principal 2%' THEN 3
-                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 4
+                                        WHEN LOWER(designation) LIKE '%principal%' THEN 2                                        
+                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 3
                                         ELSE 5
                                     END, designation")    
                     ->get(); 
@@ -214,9 +212,8 @@ class FrontendController extends Controller
                     ->where('musicians.status',1)
                     ->orderByRaw("CASE 
                                         WHEN LOWER(designation) LIKE '%concertmaster%' THEN 1
-                                        WHEN LOWER(designation) LIKE '%principal 1%' THEN 2
-                                        WHEN LOWER(designation) LIKE '%principal 2%' THEN 3
-                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 4
+                                        WHEN LOWER(designation) LIKE '%principal%' THEN 2                                        
+                                        WHEN LOWER(designation) LIKE '%tutti%' THEN 3
                                         ELSE 5
                                     END, designation")    
                     ->get();    
