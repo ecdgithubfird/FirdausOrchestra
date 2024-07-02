@@ -39,8 +39,8 @@
                     <div class="row">
                     @foreach($images as $image)
                         @if($loop->iteration >= 2 && $loop->iteration <= 3)
-                        <div class="col-md-12 col-xs-12 pe-0">
-                            <img src="{{$image}}" class="h-200 img-fluid">
+                        <div class="col-md-12 col-xs-12 pe-0 ">
+                            <img src="{{$image}}" class="h-200 img-fluid @if($loop->iteration == 3) pt-12 @endif">
                         </div>
                         @endif  
                     @endforeach                     

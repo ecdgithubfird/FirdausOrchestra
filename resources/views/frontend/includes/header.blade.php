@@ -44,6 +44,14 @@
                     </a>
                 </li>
                 @endif
+                <li class="nav-item">
+                    <div class="switch">
+                        <input id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox">
+                        <label for="language-toggle"></label>
+                        <span class="on">BN</span>
+                        <span class="off">EN</span>
+                    </div>
+                </li>
                 </ul>
             </div>
         </div>
