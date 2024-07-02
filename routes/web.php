@@ -7,6 +7,7 @@ use Modules\News\Http\Controllers\Frontend\NewsController;
 use Modules\Testimonial\Http\Controllers\Frontend\TestimonialsController;
 use Modules\Performance\Http\Controllers\Frontend\PerformancesController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ContactFormController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,7 +28,7 @@ Route::get('language/{language}', [LanguageController::class, 'switch'])->name('
 Route::get('dashboard', 'App\Http\Controllers\Frontend\FrontendController@index')->name('dashboard');
 
 
-
+Route::post('/contact', 'App\Http\Controllers\ContactFormController@store')->name('contact.store');
 /*
 *
 * Frontend Routes
@@ -60,6 +61,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Frontend', 'as' => 'frontend.
     Route::get("/getEventsByMonth/{month}",'FrontendController@getEventsByMonth' );
     
     Route::post("/getEventsByFilter",'FrontendController@getEventsByFilter' );
+    
     Route::group(['middleware' => ['auth']], function () {
         /*
         *

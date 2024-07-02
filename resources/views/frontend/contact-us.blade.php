@@ -33,39 +33,58 @@
                             </li>
                         @endforeach
                     </ul>
-                    <form class="contact-form">
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    <!-- Validation Errors -->
+                    @if($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>There were some problems with your input:</strong>
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('contact.store') }}" class="contact-form">
+                    @csrf
                         <label class="form-label">Enter your Name</label>
                         <div class="mb-3 input-group flex-nowrap">
                             <span class="input-group-text fa fa-user-o"></span>
-                            <input type="text" class="form-control shadow-none" placeholder="Name">
+                            <input type="text" name="name" class="form-control shadow-none" placeholder="Name">
                         </div>
                         <label class="form-label">Enter your Email id</label>
                         <div class="mb-3 input-group flex-nowrap">
                             <span class="input-group-text fa fa-envelope-o"></span>
-                            <input type="text" class="form-control shadow-none" placeholder="Email id">
+                            <input type="text" name="email" class="form-control shadow-none" placeholder="Email id">
                         </div>
                         <label class="form-label">Enter your Company</label>
                         <div class="mb-3 input-group flex-nowrap">
                             <span class="input-group-text fa fa-building-o"></span>
-                            <input type="text" class="form-control shadow-none" placeholder="Company">
+                            <input type="text" name="company" class="form-control shadow-none" placeholder="Company">
                         </div>
                         <label class="form-label">Enter your Contact no.</label>
                         <div class="mb-3 input-group flex-nowrap">
                             <span class="input-group-text fa fa-mobile"></span>
-                            <input type="text" class="form-control shadow-none" placeholder="Contact no.">
+                            <input type="text" name="contact_no" class="form-control shadow-none" placeholder="Contact no.">
                         </div>
                         <label class="form-label">Enter your Country</label>
                         <div class="mb-3 input-group flex-nowrap">
                             <span class="input-group-text fa fa-globe"></span>
-                            <input type="text" class="form-control shadow-none" placeholder="Country" >
+                            <input type="text" name="country" class="form-control shadow-none" placeholder="Country">
                         </div>
                         <label class="form-label">Inquiry box</label>
-                        <div class=" input-group flex-nowrap contact-textarea">
-                            <textarea class="form-control shadow-none" aria-label="With textarea" placeholder="Inquiry" rows="4"></textarea> 
+                        <div class="input-group flex-nowrap contact-textarea">
+                            <textarea class="form-control shadow-none" aria-label="With textarea" placeholder="Inquiry" name="inquiry" rows="4"></textarea> 
                         </div>
                         <span class="float-end textarea-contact">Max 2000 characters</span>
-                        <button class="btn sub-btn w-100 mt-sub-btn">Submit</button>
-                     </form>
+                        <button type="submit" class="btn sub-btn w-100 mt-sub-btn">Submit</button>
+                    </form>
                 </div>
 
             </div>
