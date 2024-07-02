@@ -28,7 +28,7 @@ class FrontendController extends Controller
     {
         $events = Performance::where('is_featured', 1)->where('status',1)->get();
         $carousels =  Post::where('category_name',"Carousel")->get();
-        $testimonials = Testimonial::where('is_featured',1)->where('status',1)->get();
+        $testimonials = Testimonial::where('is_featured',1)->where('status',1)->whereNull('deleted_at')->get();
         $about =  Post::where('category_name',"About Us")->where('type', "Article")->where('is_featured', 1)->get();
         $aboutImage = Post::where('category_name',"About Us")->where('type', "Feature")->where('is_featured', 1)->get();
         $news = News::where('is_featured', '1')->where('status',1)->orderBy('created_at', 'asc')->limit(5)->get();
@@ -53,7 +53,7 @@ class FrontendController extends Controller
         ->where('pages.name', 'Home')
         ->where('fields.name', 'like', '%carousel%') // Add this line to filter by 'carousel' in 'field_name'
         ->get();
-        
+       
         return view('frontend.index')->with('events',$events)
         ->with('carousels',$carouselData)
         ->with('testimonials',$testimonials)
