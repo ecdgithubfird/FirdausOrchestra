@@ -34,6 +34,11 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'Install Composer dependencies'
 
+# Refresh the database before running tests
+- script: |
+    php artisan migrate:fresh --seed
+  displayName: 'Refresh the database'
+
 # Run PHPUnit tests
 - script: vendor/bin/phpunit
   displayName: 'Run PHPUnit tests'
@@ -47,6 +52,16 @@ steps:
     targetFolder: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
     cleanTargetFolder: true
   displayName: 'Deploy application'
+
+# SSH commands to run database migrations and setup on the server
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
+    runOptions: 'commands'
+    commands: |
+      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
+      php artisan migrate --force
+  displayName: 'Run migrations on server'
 
 # Restart Nginx and PHP-FPM services
 - task: SSH@0
@@ -70,3 +85,6 @@ steps:
       php artisan route:cache
       php artisan view:cache
   displayName: 'Post-Deployment Steps'
+
+
+
