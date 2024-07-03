@@ -35,7 +35,7 @@ steps:
   displayName: 'Install Composer dependencies'
 # Refresh the database before running tests
 - script: |
-    php artisan migrate: fresh --seed
+    php artisan migrate:fresh --seed
   displayName: 'Refresh the database'
 
 # Run PHPUnit tests
