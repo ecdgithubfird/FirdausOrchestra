@@ -34,10 +34,6 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'Install Composer dependencies'
 
-- script: |
-    php artisan migrate:fresh --seed --env=staging
-  displayName: 'Refresh the database'
-
 # Run PHPUnit tests
 - script: vendor/bin/phpunit
   displayName: 'Run PHPUnit tests'
