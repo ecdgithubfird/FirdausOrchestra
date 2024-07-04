@@ -34,15 +34,19 @@ steps:
     TargetFolder: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
     OverWrite: true
 
-# Step 5: Install NPM dependencies
-#- script: npm install
-# displayName: 'Install NPM Dependencies'
-# workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
-
-# Step 6: Run NPM production build
-# - script: npm run prod
- # displayName: 'Run NPM Production Build'
- # workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+# Step 3: Install Composer
+- script: |
+    EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)"
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")"
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; then
+      >&2 echo 'ERROR: Invalid installer signature'
+      rm composer-setup.php
+      exit 1
+    fi
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    rm composer-setup.php
+  displayName: 'Install Composer'
 
 # Step 7: Archive files
 - task: ArchiveFiles@2
