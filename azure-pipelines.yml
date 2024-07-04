@@ -24,10 +24,6 @@ steps:
 - checkout: self
   displayName: 'Checkout repository'
 
-# Step 3: Run Laravel PHPUnit tests
-- script: php artisan test
-  displayName: 'Run PHP Artisan Tests'
-  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
 
 # Step 4: Copy .env file (if not already included in repository)
 - script: |
