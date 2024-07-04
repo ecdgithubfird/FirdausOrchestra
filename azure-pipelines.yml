@@ -5,9 +5,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  phpVersion: 8.3
+  phpVersion: '8.3'  # Adjust as per your PHP version
 
 steps:
+# Step 1: Install PHP and required extensions
 - script: |
     sudo apt-get update
     sudo apt-get install -y php${phpVersion} php${phpVersion}-fpm php${phpVersion}-mysql php${phpVersion}-mbstring php${phpVersion}-xml php${phpVersion}-curl
@@ -19,67 +20,62 @@ steps:
     php -version
   displayName: 'Install PHP and required extensions'
 
-# Checkout the repository
+# Step 2: Checkout the repository
 - checkout: self
   displayName: 'Checkout repository'
 
-# Cache Composer dependencies
-- task: Cache@2
+# Step 3: Download the .env file from secure file library
+- task: DownloadSecureFile@1
+  name: envFile
+  displayName: 'Download .env file from secure file library'
   inputs:
-    key: 'composer | "$(Agent.OS)" | composer.lock'
-    path: '~/.composer/cache'
-  displayName: 'Cache Composer dependencies'
+    secureFile: '.env'
 
-# Install Composer dependencies
-- script: composer install --no-interaction --prefer-dist
-  displayName: 'Install Composer dependencies'
+# Step 4: Copy the .env file to the project directory
+- script: cp -f $(envFile.secureFilePath) .env
+  displayName: 'Copy Env File'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'  # Add your Laravel project path
 
-# Run PHPUnit tests
-- script: vendor/bin/phpunit
-  displayName: 'Run PHPUnit tests'
+# Step 5: Set up the environment and cache the configuration
+- script: |
+    php artisan key:generate
+    php artisan config:cache
+  displayName: 'Set up environment and cache configuration'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
 
-# Deploy application using SSH service connection
-- task: CopyFilesOverSSH@0
+# Step 6: Run database migrations
+- script: php artisan migrate --force
+  displayName: 'Run database migrations'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+
+# Step 7: Run Laravel PHPUnit tests
+- script: php artisan test
+  displayName: 'Run PHP Artisan Tests'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+
+# Step 8: Install NPM dependencies
+- script: npm install
+  displayName: 'Install NPM Dependencies'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+
+# Step 9: Run NPM production build
+- script: npm run prod
+  displayName: 'Run NPM Production Build'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+
+# Step 10: Archive files
+- task: ArchiveFiles@2
+  displayName: 'Archive files'
   inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**'
-    targetFolder: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
-    cleanTargetFolder: true
-  displayName: 'Deploy application'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
 
-# SSH commands to run database migrations and setup on the server
-- task: SSH@0
+# Step 11: Publish build artifacts
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
   inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    runOptions: 'commands'
-    commands: |
-      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
-      php artisan migrate --force
-  displayName: 'Run migrations on server'
-
-# Restart Nginx and PHP-FPM services
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    runOptions: 'commands'
-    commands: |
-      sudo systemctl restart nginx
-      sudo systemctl restart php${phpVersion}-fpm
-  displayName: 'Restart Services'
-
-# Post-deployment steps to clear and optimize cache
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    runOptions: 'commands'
-    commands: |
-      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
-      php artisan cache:clear
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
-  displayName: 'Post-Deployment Steps'
-
-
-
+    artifactName: 'drop'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
