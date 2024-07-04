@@ -48,15 +48,11 @@ steps:
     rm composer-setup.php
   displayName: 'Install Composer'
 
-jobs:
-- job: RunTests
-  displayName: 'Run PHPUnit Tests'
-  steps:
-  - script: ./vendor/bin/phpunit
+# Step 5: Run PHPUnit Tests
+  - script: |
+      ./vendor/bin/phpunit
     displayName: 'Run PHPUnit Tests'
     workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
-  # Add other steps as needed
-
 
 # Step 7: Archive files
 - task: ArchiveFiles@2
