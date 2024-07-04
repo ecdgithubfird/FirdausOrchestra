@@ -48,10 +48,10 @@ steps:
     rm composer-setup.php
   displayName: 'Install Composer'
 
-# Step 5: Install Composer Dependencies
-- script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
-  displayName: 'Install Composer Dependencies'
-  workingDirectory: '$(System.DefaultWorkingDirectory)/FirdausOrchestra'
+# Step 6 (Optional): Run PHPUnit Tests
+- script: /usr/local/bin/composer exec phpunit
+  displayName: 'Run PHPUnit Tests'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
 
 # Step 7: Archive files
 - task: ArchiveFiles@2
