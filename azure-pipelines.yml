@@ -51,8 +51,6 @@ steps:
 jobs:
 - job: RunTests
   displayName: 'Run PHPUnit Tests'
-  pool:
-    vmImage: 'ubuntu-latest'
   steps:
   - script: ./vendor/bin/phpunit
     displayName: 'Run PHPUnit Tests'
