@@ -35,14 +35,14 @@ steps:
     OverWrite: true
 
 # Step 5: Install NPM dependencies
-- script: npm install
-  displayName: 'Install NPM Dependencies'
-  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+#- script: npm install
+# displayName: 'Install NPM Dependencies'
+# workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
 
 # Step 6: Run NPM production build
-- script: npm run prod
-  displayName: 'Run NPM Production Build'
-  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+# - script: npm run prod
+ # displayName: 'Run NPM Production Build'
+ # workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
 
 # Step 7: Archive files
 - task: ArchiveFiles@2
