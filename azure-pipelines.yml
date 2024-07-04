@@ -24,13 +24,19 @@ steps:
 - checkout: self
   displayName: 'Checkout repository'
 
+# Step 3: Run Laravel PHPUnit tests
+- script: php artisan test
+  displayName: 'Run PHP Artisan Tests'
+  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
 
-# Step 4: Copy .env file (if not already included in repository)
-- script: |
-    if [ ! -f .env ]; then
-      cp -f $(System.DefaultWorkingDirectory)/.env .env
-    fi
+# Step 4: Copy the .env file to the project directory
+- task: CopyFiles@2
   displayName: 'Copy .env File'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: '.env'
+    TargetFolder: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+    OverWrite: true
 
 # Step 5: Install NPM dependencies
 - script: npm install
