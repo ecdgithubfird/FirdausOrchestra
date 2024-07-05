@@ -54,6 +54,14 @@ steps:
 - script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
   workingDirectory: ./  # Current directory
   displayName: 'Install Composer Dependencies'
+   
+#Step 7: Security Scans (Example with OWASP ZAP)
+- task: OWASPZAPScan@0
+  displayName: 'OWASP ZAP Security Scan'
+  inputs:
+    targetURL: 'https://staging.firdausorchestra.com/'
+    maxDepth: '5'
+    activeScan: true
 
 
 # Step 6: Archive files
