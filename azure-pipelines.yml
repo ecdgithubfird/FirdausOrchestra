@@ -55,13 +55,12 @@ steps:
   workingDirectory: ./  # Current directory
   displayName: 'Install Composer Dependencies'
    
-#Step 7: Security Scans (Example with OWASP ZAP)
-- task: OWASPZAPScan@0
-  displayName: 'OWASP ZAP Security Scan'
-  inputs:
-    targetURL: 'https://staging.firdausorchestra.com/'
-    maxDepth: '5'
-    activeScan: true
+# Step 8: Deploy to Custom Server
+- script: |
+    export SSHPASS="$remoteServerPassword"
+    sshpass -e scp -o StrictHostKeyChecking=no -r $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip azureuser@40.119.173.15:/home/azureuser/development_hosting/php/laravel/FirdausOrchestra/
+    sshpass -e ssh -o StrictHostKeyChecking=no azureuser@40.119.173.15 "cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra && unzip -o $(Build.BuildId).zip && rm $(Build.BuildId).zip"
+  displayName: 'Deploy to Custom Server'
 
 
 # Step 6: Archive files
