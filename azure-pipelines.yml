@@ -76,8 +76,9 @@ steps:
 # Step 8: Deploy to Custom Server
 - script: |
     ssh azureuser@40.119.173.15 "cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra && \
-    rm -rf $(Build.BuildId) && \
-    scp -r $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip . && \
-    unzip -o $(Build.BuildId).zip && \
-    rm $(Build.BuildId).zip"
+    rm -rf $(Build.BuildId) && \                # Remove old artifacts if present
+    scp -r $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip . && \  # Upload new artifact
+    unzip -o $(Build.BuildId).zip && \          # Unzip new artifact
+    rm $(Build.BuildId).zip" || true            # Clean up artifact after deployment (if successful)
   displayName: 'Deploy to Custom Server'
+
