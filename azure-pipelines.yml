@@ -58,10 +58,10 @@ steps:
     
   displayName: 'Run PHPUnit Tests'
 
-# Step 6: Install Composer Dependencies
 - script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
+  workingDirectory: ./  # Current directory
   displayName: 'Install Composer Dependencies'
-  workingDirectory: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+
 
 # Step 7: Archive files
 - task: ArchiveFiles@2
