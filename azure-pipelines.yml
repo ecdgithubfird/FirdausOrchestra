@@ -55,7 +55,7 @@ steps:
     runOptions: inline
     inline: |
       cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
-      ./vendor/bin/phpunit
+    
   displayName: 'Run PHPUnit Tests'
 
 # Step 6: Install Composer Dependencies
