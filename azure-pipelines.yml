@@ -48,6 +48,16 @@ steps:
     rm composer-setup.php
   displayName: 'Install Composer'
 
+  # Step 6: Run PHPUnit Tests
+- task: UseSSH@0
+  inputs:
+    sshEndpoint: 'staging-firdausorchestra'
+    runOptions: inline
+    inline: |
+      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
+      ./vendor/bin/phpunit
+  displayName: 'Run PHPUnit Tests'
+
 # Step 6: Install Composer Dependencies
 - script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
   displayName: 'Install Composer Dependencies'
