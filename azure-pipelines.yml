@@ -50,9 +50,9 @@ steps:
 
 
     
-- script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
-  workingDirectory: ./  # Current directory
-  displayName: 'Install Composer Dependencies'
+#- script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
+#  workingDirectory: ./  # Current directory
+#  displayName: 'Install Composer Dependencies'
 
 
 # Step 7: Archive files
