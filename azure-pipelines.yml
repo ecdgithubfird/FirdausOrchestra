@@ -54,13 +54,6 @@ steps:
 - script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
   workingDirectory: ./  # Current directory
   displayName: 'Install Composer Dependencies'
-   
-# Step 8: Deploy to Custom Server
-- script: |
-    export SSHPASS="$remoteServerPassword"
-    sshpass -e scp -o StrictHostKeyChecking=no -r $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip azureuser@40.119.173.15:/home/azureuser/development_hosting/php/laravel/FirdausOrchestra/
-    sshpass -e ssh -o StrictHostKeyChecking=no azureuser@40.119.173.15 "cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra && unzip -o $(Build.BuildId).zip && rm $(Build.BuildId).zip"
-  displayName: 'Deploy to Custom Server'
 
 
 # Step 6: Archive files
@@ -79,3 +72,12 @@ steps:
   inputs:
     artifactName: 'drop'
     targetPath: '$(Build.ArtifactStagingDirectory)'
+
+# Step 8: Deploy to Custom Server
+- script: |
+    ssh azureuser@40.119.173.15 "cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra && \
+    rm -rf $(Build.BuildId) && \
+    scp -r $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip . && \
+    unzip -o $(Build.BuildId).zip && \
+    rm $(Build.BuildId).zip"
+  displayName: 'Deploy to Custom Server'
