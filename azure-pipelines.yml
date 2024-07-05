@@ -48,8 +48,8 @@ steps:
     rm composer-setup.php
   displayName: 'Install Composer'
 
-  # Step 6: Run PHPUnit Tests
-- task: UseSSH@0
+ # Step 6: Run PHPUnit Tests
+- task: SSH@0
   inputs:
     sshEndpoint: 'staging-firdausorchestra'
     runOptions: inline
