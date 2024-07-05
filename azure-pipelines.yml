@@ -49,7 +49,7 @@ steps:
   displayName: 'Install Composer'
 
  - script: ./vendor/bin/phpunit  # Assuming your PHPUnit binary is in vendor/bin
-  workingDirectory: ./  # Current directory of your project
+  workingDirectory: /home/azureuser/development_hosting/php/laravel/FirdausOrchestra  # Current directory of your project
   displayName: 'Run PHPUnit Tests (Local)'
 
     
