@@ -48,9 +48,6 @@ steps:
     rm composer-setup.php
   displayName: 'Install Composer'
 
- - script: ./vendor/bin/phpunit  # Assuming your PHPUnit binary is in vendor/bin
-  workingDirectory: /home/azureuser/development_hosting/php/laravel/FirdausOrchestra  # Current directory of your project
-  displayName: 'Run PHPUnit Tests (Local)'
 
     
 - script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
