@@ -53,7 +53,7 @@
                         @endforeach
                     </div>
                 </div>
-                    <div class="row">
+                    <div class="row mt-5">
                         @foreach($topMusicians as $index => $item)
                         <div class="col-sm-4 artist-item  openModalButton " data-index="{{ $index }}" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                             <div class="artist-img hovertop column"> 
