@@ -34,7 +34,7 @@
         <p class="drop-in">{{ $formattedData['description'] }}</p>
     @endif    
 </section>
-
+{{--
 <section class="meet-musicians">
     <div class="container">
         <div class="row mt-2">
@@ -53,14 +53,13 @@
             </div>  
         </div>
     </div>
-</section>
+</section>--}}
 
 <section class="meet-fellow">
   <div class="container">
-    <h4>{{$section3TitleValue}}</h4>
-    @foreach($section3->chunk(4) as $chunk)
+    <h4>{{$section3TitleValue}}</h4>    
     <div class="row">
-        @foreach($chunk as $item)
+        @foreach($section3 as $item)
         <div class="col-md-3 col-sm-6 mt-4 openModalButton" id="openModalButton" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}"">
             <div class="vio-musi-img mx-auto d-block hoverflash column">
                <figure> <img src="{{$item->file}}" class="img-fluid"> </figure>
@@ -71,10 +70,10 @@
         </div>
         @endforeach
     </div>
-    @endforeach
-    <div class="">
+    
+    {{--<div class="">
       <a href="/firdaus-orchestra-musicians" class="no-style-link"><button class="btn view-more">View More</button></a>
-    </div>
+    </div>--}}
   </div>
 </section>
 @php   
@@ -93,6 +92,7 @@
         }
     }  
 @endphp
+{{--
 <section class="patron-board">
     <div class="container">
         <h4> {{$section4Title}} </h4>
@@ -147,7 +147,7 @@
       </div>
     </div>
   </div>
-</section>
+</section>--}}
 
 <section class="stay-informed">
     <div class="container">    

@@ -44,7 +44,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Frontend', 'as' => 'frontend.
     Route::get('faq', 'FrontendController@faq')->name('faq');
     Route::get('about-us', 'FrontendController@aboutUs')->name('about-us');
     Route::get('who-we-are', 'FrontendController@whoWeAre')->name('who-we-are');
-    Route::get('our-people', 'FrontendController@ourPeople')->name('our-people');
+    Route::get('our-team', 'FrontendController@ourPeople')->name('our-team');
     Route::get('our-journey', 'FrontendController@projects')->name('our-journey');
     Route::get('careers', 'FrontendController@careers')->name('careers');
     Route::get('contact-us', 'FrontendController@contactUs')->name('contact-us');

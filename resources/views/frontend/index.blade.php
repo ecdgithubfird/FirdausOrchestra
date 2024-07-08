@@ -220,6 +220,9 @@
                         </div>     
                         @endforeach                
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#demo1" data-bs-slide="prev">
+                    <span class="">Previous<i class="fa fa-angle-left ms-3"></i></span>
+                    </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#demo1" data-bs-slide="next">
                         <span class="">Next <i class="fa fa-angle-right ms-3"></i></span>
                     </button>

@@ -9,6 +9,7 @@ use Modules\Testimonial\Models\Testimonial;
 use Modules\News\Models\News;
 use Modules\Category\Models\Category;
 use Modules\Musician\Models\Musician;
+use Modules\Team\Models\Team;
 use Modules\Menu\Models\Menu;
 use Modules\Page\Models\Page;
 use Illuminate\Http\Request;
@@ -110,7 +111,8 @@ class FrontendController extends Controller
                         ->get();
         $sectionLeaders = Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
                         ->select('musicians.name','musicians.designation','musicians.file','musicians.id')
-                        ->where('categories.name', '=', 'Section Leaders')                        
+                        ->where('categories.name', '=', 'Section Leaders')   
+                        ->whereRaw("LOWER(REPLACE(musicians.designation, ' ', '')) not like ?", ['%concertmaster%'])                     
                         ->orderBy('musicians.musician_order', 'asc')
                         ->get();
         $topMusician = Musician::join('categories', 'musicians.category_id', '=', 'categories.id')
@@ -342,9 +344,7 @@ class FrontendController extends Controller
 
         $section3TitleValue = $this->getAContent('Section3 Title','our-people');   
 
-        $section3 = Musician::where('designation', '=', 'Principal')
-                    ->limit(4)
-                    ->get();
+        $section3 = Team::where('status',1)->orderBy('team_order')->get();
         
         $section4Title = $this->getAContent('Section4 Title','our-people');
         $section4 = $this->getDataByContent('Section4',$slug);        

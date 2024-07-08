@@ -55,7 +55,7 @@
                 </div>
                     <div class="row">
                         @foreach($topMusicians as $index => $item)
-                        <div class="col-sm-4 artist-item  openModalButton @if($index == 1) sec-artist @elseif($index == 2) third-artist @endif" data-index="{{ $index }}" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                        <div class="col-sm-4 artist-item  openModalButton " data-index="{{ $index }}" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                             <div class="artist-img hovertop column"> 
                                 <figure><img src="{{$item->file}}" width="100%"></figure>
                             </div>

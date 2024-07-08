@@ -22,5 +22,6 @@
     "Subscription": true,
     "Newsletter": true,
     "Subscriber": true,
-    "EventSetting": true
+    "EventSetting": true,
+    "Team": true
 }
