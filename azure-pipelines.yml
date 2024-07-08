@@ -1,13 +1,15 @@
+
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 variables:
-  phpVersion: 8.3
+  phpVersion: '8.3'  # Adjust as per your PHP version
 
 steps:
+# Step 1: Install PHP and required extensions
 - script: |
     sudo apt-get update
     sudo apt-get install -y php${phpVersion} php${phpVersion}-fpm php${phpVersion}-mysql php${phpVersion}-mbstring php${phpVersion}-xml php${phpVersion}-curl
@@ -19,64 +21,64 @@ steps:
     php -version
   displayName: 'Install PHP and required extensions'
 
-# Checkout the repository
+# Step 2: Checkout the repository
 - checkout: self
   displayName: 'Checkout repository'
 
-# Cache Composer dependencies
-- task: Cache@2
+
+# Step 3: Copy the .env file to the project directory
+- task: CopyFiles@2
+  displayName: 'Copy .env File'
   inputs:
-    key: 'composer | "$(Agent.OS)" | composer.lock'
-    path: '~/.composer/cache'
-  displayName: 'Cache Composer dependencies'
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: '.env'
+    TargetFolder: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
+    OverWrite: true
 
-# Install Composer dependencies
-- script: composer install --no-interaction --prefer-dist
-  displayName: 'Install Composer dependencies'
+# Step 4: Install Composer
+- script: |
+    EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)"
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")"
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; then
+      >&2 echo 'ERROR: Invalid installer signature'
+      rm composer-setup.php
+      exit 1
+    fi
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    rm composer-setup.php
+  displayName: 'Install Composer'
 
-# Run PHPUnit tests
-- script: vendor/bin/phpunit
-  displayName: 'Run PHPUnit tests'
 
-# Deploy application using SSH service connection
-- task: CopyFilesOverSSH@0
+# Step 5: Install Composer Dependencies
+- script: /usr/local/bin/composer install --prefer-dist --no-interaction --optimize-autoloader
+  workingDirectory: ./  # Current directory
+  displayName: 'Install Composer Dependencies'
+
+
+# Step 6: Archive files
+- task: ArchiveFiles@2
+  displayName: 'Archive files'
   inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**'
-    targetFolder: '/home/azureuser/development_hosting/php/laravel/FirdausOrchestra'
-    cleanTargetFolder: true
-  displayName: 'Deploy application'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
 
-# SSH commands to run database migrations and setup on the server
-- task: SSH@0
+# Step 7: Publish build artifacts
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
   inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    runOptions: 'commands'
-    commands: |
-      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
-      php artisan migrate --force
-  displayName: 'Run migrations on server'
+    artifactName: 'drop'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
 
-# Restart Nginx and PHP-FPM services
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    runOptions: 'commands'
-    commands: |
-      sudo systemctl restart nginx
-      sudo systemctl restart php${phpVersion}-fpm
-  displayName: 'Restart Services'
+# Step 8: Deploy to Custom Server
+- script: |
+    ssh azureuser@40.119.173.15 "cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra && \
+    rm -rf $(Build.BuildId) && \                # Remove old artifacts if present
+    scp -r $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip . && \  # Upload new artifact
+    unzip -o $(Build.BuildId).zip && \          # Unzip new artifact
+    rm $(Build.BuildId).zip" || true            # Clean up artifact after deployment (if successful)
+  displayName: 'Deploy to Custom Server'
 
-# Post-deployment steps to clear and optimize cache
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'staging-firdausorchestra'  # Replace with the actual name of your SSH service connection
-    runOptions: 'commands'
-    commands: |
-      cd /home/azureuser/development_hosting/php/laravel/FirdausOrchestra
-      php artisan cache:clear
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
-  displayName: 'Post-Deployment Steps'
